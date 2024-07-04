@@ -12,9 +12,8 @@ This project is a web application for booking doctor appointments, developed usi
 
 - [Features](#features)
 - [Technologies](#technologies)
+- [Project ERD](#project-erd)
 - [Installation](#installation)
-  - [Local Installation](#local-installation)
-  - [Installation with Docker](#installation-with-docker)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -39,84 +38,13 @@ This project is a web application for booking doctor appointments, developed usi
 - **Bootstrap**: A CSS framework to create modern, mobile-first web pages.
 - **RESTful API**: Integration with external systems and services, enabling scalability and future enhancements.
 
+## Project ERD
+
+For detailed Project ERD, please refer to the [Project ERD Detail](./documents/project_erd_detail.md).
+
 ## Installation
 
-### Local Installation
-
-#### Prerequisites
-
-- Python 3.11 or higher
-- Django 4.2 or higher
-- pip (Python package installer)
-
-#### Steps
-
-1. **Clone the repository**:
-    ```bash
-    git clone https://github.com/yourusername/doctor-appointment-booking-system.git
-    cd doctor-appointment-booking-system
-    ```
-
-2. **Create and activate a virtual environment**:
-    ```bash
-    python -m virtualenv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-    ```
-
-3. **Install dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4. **Apply migrations**:
-    ```bash
-    python manage.py migrate
-    ```
-
-5. **Run the development server**:
-    ```bash
-    python manage.py runserver
-    ```
-
-6. **Open your browser and navigate to**:
-    ```
-    http://127.0.0.1:8000/
-    ```
-
-### Installation with Docker
-
-#### Prerequisites
-
-- Docker
-- Docker Compose
-
-#### Steps
-
-1. **Clone the repository**:
-    ```bash
-    git clone https://github.com/yourusername/doctor-appointment-booking-system.git
-    cd doctor-appointment-booking-system
-    ```
-
-2. **Build and run the containers**:
-    ```bash
-    docker-compose up --build
-    ```
-
-3. **Apply migrations**:
-    ```bash
-    docker-compose exec web python manage.py migrate
-    ```
-
-4. **Create a superuser**:
-    ```bash
-    docker-compose exec web python manage.py createsuperuser
-    ```
-
-5. **Open your browser and navigate to**:
-    ```
-    http://127.0.0.1:8000/
-    ```
+For detailed installation instructions, please refer to the [Installation Guide](./documents/installation_guide.md).
 
 ## Usage
 
