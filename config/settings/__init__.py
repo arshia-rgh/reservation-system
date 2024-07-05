@@ -18,6 +18,4 @@ elif MODE == "production":
 else:
     # If MODE is neither 'development' nor 'production', raise an exception
     # Raises: Exception with a descriptive error message
-    raise Exception(
-        "MODE environment variable must be set to either 'development' or 'production'"
-    )
+    raise Exception("MODE environment variable must be set to either 'development' or 'production'")
