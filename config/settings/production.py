@@ -3,7 +3,7 @@ import os
 from .base import *
 
 # Set DEBUG to False in production environment
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS is a list of strings representing the host/domain names that this Django site can serve.
 # It's fetched from the environment variable ALLOWED_HOSTS and split by space.
@@ -24,3 +24,6 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT"),  # The port of the database.
     }
 }
+
+# Static files (CSS, JavaScript, Images)
+STATIC_ROOT = BASE_DIR / "staticfiles/"

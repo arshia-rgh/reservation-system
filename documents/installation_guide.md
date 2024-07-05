@@ -74,19 +74,13 @@
    docker-compose up --build
    ```
 
-3. **Apply migrations**:
-
-   ```bash
-   docker-compose exec web python manage.py migrate
-   ```
-
-4. **Create a superuser**:
+3. **Create a superuser**:
 
    ```bash
    docker-compose exec web python manage.py createsuperuser
    ```
 
-5. **Open your browser and navigate to**:
+4. **Open your browser and navigate to**:
    ```
    http://127.0.0.1:8000/
    ```
