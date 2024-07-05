@@ -1,7 +1,7 @@
 # Doctor Appointment Booking System
 
-![Django](https://img.shields.io/badge/Django-4.2%2B-brightgreen)
-![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
+![Django](https://img.shields.io/badge/Django-5%2B-brightgreen)
+![Python](https://img.shields.io/badge/Python-3.12%2B-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue)
