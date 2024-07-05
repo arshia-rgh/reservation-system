@@ -1,10 +1,10 @@
 from django.core.validators import RegexValidator
 from django.db import models
 
-from utils import BaseModel
+from utils import BaseModelMixin
 
 
-class Patient(BaseModel):
+class Patient(BaseModelMixin):
     """
     This class represents a patient in the system.
 
