@@ -1,3 +1,4 @@
+from django.core.validators import RegexValidator
 from django.db import models
 
 from utils import BaseModel
@@ -16,7 +17,11 @@ class Patient(BaseModel):
     """
 
     user = models.OneToOneField("auth.User", on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=11, unique=True)
+    phone_number = models.CharField(
+        max_length=13,
+        unique=True,
+        validators=[RegexValidator(r"^(09|\+989)\d{9}$", "Invalid Iranian phone number.")],
+    )
     address = models.CharField(max_length=255, null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     wallet = models.IntegerField(default=0)
