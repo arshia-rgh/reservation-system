@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class BaseModel(models.Model):
+class BaseModelMixin(models.Model):
     """
     This is an abstract base model class that provides common fields for all models.
 
