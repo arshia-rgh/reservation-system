@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # Local apps
     "accounts.apps.AccountsConfig",
     "doctors.apps.DoctorsConfig",
+    "appointments.apps.AppointmentsConfig",
 ]
 
 MIDDLEWARE = [
