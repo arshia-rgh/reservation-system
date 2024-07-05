@@ -32,6 +32,7 @@ class Doctor(BaseModelMixin):
     last_name: The last name of the doctor.
     specialty: The specialty of the doctor.
     phone_number: The phone number of the doctor.
+    email: The email address of the doctor.
     address: The address of the doctor.
     fee: The fee of the doctor.
     """
@@ -43,7 +44,8 @@ class Doctor(BaseModelMixin):
         unique=True,
         validators=[RegexValidator(r"^(09|\+989)\d{9}$", "Invalid Iranian phone number.")],
     )
-    address = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(max_length=255, unique=True)
+    address = models.CharField(max_length=255)
     fee = models.IntegerField()
 
     def __str__(self):
