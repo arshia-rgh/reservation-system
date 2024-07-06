@@ -12,7 +12,7 @@ class Speciality(BaseModelMixin):
     name: The name of the specialty.
     description: A brief description of the specialty.
     """
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True, validators=[RegexValidator(r"^[a-zA-Z]+$", )])
     description = models.TextField(null=True, blank=True)
 
     class Meta:
