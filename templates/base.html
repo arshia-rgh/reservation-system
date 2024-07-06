@@ -1,4 +1,5 @@
 {% load static %}
+{% load navbar_tag %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-">
     </head>
     <body>
-        {% include 'partials/navbar.html' %}
+        {% navbar %}
         <div class="jumbotron">
             {% include 'partials/messages.html' %}
             {% block content %}{% endblock %}

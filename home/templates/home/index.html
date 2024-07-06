@@ -3,14 +3,20 @@
 {% block content %}
     <div class="d-flex flex-row">
         <div class="align-content-start">
-            <h1>Doctors</h1>
+            <h1>Doctors
+                {% if speciality_filter %}
+                    with {{ speciality_filter }} speciality
+                {% endif %}
+            </h1>
             {% for doctor in doctors %}
                 <div class="card-group p-2">
                     <div class="col">
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
                                 <h5 class="card-title">{{ doctor }}</h5>
-                                <p class="card-text"><a href="#">{{ doctor.speciality }}</a></p>
+                                <p class="card-text"><a
+                                        href="{% url 'home:index' %}?speciality={{ doctor.speciality }}">{{ doctor.speciality }}</a>
+                                </p>
                                 <a href="#" class="btn btn-primary">Detail</a>
                             </div>
                         </div>

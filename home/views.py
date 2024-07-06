@@ -26,3 +26,10 @@ class IndexHomePageView(ListView):
             # If a speciality filter is provided, filter the queryset based on the speciality.
             return self.queryset.filter(speciality__name__icontains=speciality_filter)
         return self.queryset.all()  # If no speciality filter is provided, return the original queryset.
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        speciality_filter = self.request.GET.get("speciality")
+        if speciality_filter:
+            context["speciality_filter"] = speciality_filter  # Add the speciality filter to the context.
+        return context
