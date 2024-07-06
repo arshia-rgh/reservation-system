@@ -17,12 +17,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import path
+from django.urls import path, include
 
 from config import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", include("home.urls")),
 ]
 
 # In runserver with gunicorn, added the staticfiles_urlpatterns() to the urlpatterns list.
