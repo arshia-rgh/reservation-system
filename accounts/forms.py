@@ -6,19 +6,19 @@ from .models import Patient
 
 
 class RegisterForm(UserCreationForm):
-    birth_date = forms.DateField(help_text='Required. Format= YYYY-MM-DD')
-    phone_number = forms.CharField(max_length=13, help_text='Required')
+    birth_date = forms.DateField(help_text="Required. Format= YYYY-MM-DD")
+    phone_number = forms.CharField(max_length=13, help_text="Required")
     address = forms.CharField()
 
     class Meta(UserCreationForm.Meta):
         model = User
         fields = UserCreationForm.Meta.fields + (
-            'email',
-            'first_name',
-            'last_name',
-            'phone_number',
-            'birth_date',
-            'address',
+            "email",
+            "first_name",
+            "last_name",
+            "phone_number",
+            "birth_date",
+            "address",
         )
 
     def save(self, commit=True):
@@ -28,9 +28,9 @@ class RegisterForm(UserCreationForm):
 
             patient = Patient(
                 user=user,
-                phone_number=self.cleaned_data['phone_number'],
-                birth_date=self.cleaned_data['birth_date'],
-                address=self.cleaned_data['address'],
+                phone_number=self.cleaned_data["phone_number"],
+                birth_date=self.cleaned_data["birth_date"],
+                address=self.cleaned_data["address"],
             )
 
             patient.save()
