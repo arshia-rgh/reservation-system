@@ -20,7 +20,7 @@ def navbar():
 
     Example usage:
     ```python
-    {% specialities %}
+    {% load navbar %}
     ```
     """
     return {"specialities": Speciality.objects.all()}
