@@ -24,6 +24,7 @@ from config import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("home.urls")),
+    path("", include("accounts.urls")),
 ]
 
 # In runserver with gunicorn, added the staticfiles_urlpatterns() to the urlpatterns list.
