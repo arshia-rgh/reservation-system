@@ -10,6 +10,7 @@ class CommentAdmin(admin.ModelAdmin):
 
     This class provides customizations for the Comment model in the Django admin interface.
     """
+
     pass
 
 
@@ -20,4 +21,5 @@ class RateAdmin(admin.ModelAdmin):
 
     This class provides customizations for the Rate model in the Django admin interface.
     """
+
     pass

@@ -12,7 +12,12 @@ class Speciality(BaseModelMixin):
     name: The name of the specialty.
     description: A brief description of the specialty.
     """
-    name = models.CharField(max_length=255)
+
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        validators=[RegexValidator(r"^[a-zA-Z]+$", "Specialty name must contain only letters.")],
+    )
     description = models.TextField(null=True, blank=True)
 
     class Meta:
@@ -36,9 +41,10 @@ class Doctor(BaseModelMixin):
     address: The address of the doctor.
     fee: The fee of the doctor.
     """
+
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    speciality = models.ForeignKey(Speciality, on_delete=models.CASCADE, related_name='doctors')
+    speciality = models.ForeignKey(Speciality, on_delete=models.CASCADE, related_name="doctors")
     phone_number = models.CharField(
         max_length=13,
         unique=True,
@@ -72,7 +78,7 @@ class Schedule(BaseModelMixin):
         SATURDAY = 6
         SUNDAY = 7
 
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='schedules')
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name="schedules")
     day_of_week = models.IntegerField(choices=DayOfWeek.choices)
     start_time = models.TimeField()
     end_time = models.TimeField()

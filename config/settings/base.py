@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "doctors.apps.DoctorsConfig",
     "appointments.apps.AppointmentsConfig",
     "surveys.apps.SurveysConfig",
+    "home.apps.HomeConfig",
 ]
 
 MIDDLEWARE = [
@@ -53,7 +54,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ["templates"],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
