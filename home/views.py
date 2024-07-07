@@ -1,6 +1,6 @@
 from django.views.generic import ListView
 
-from doctors.models import Doctor
+from doctors.models import Doctor, Speciality
 
 
 class IndexHomePageView(ListView):
@@ -21,7 +21,8 @@ class IndexHomePageView(ListView):
         :return: The filtered queryset of doctors.
         """
         speciality_filter = self.request.GET.get(
-            "speciality")  # Get the speciality filter from the request query parameters.
+            "speciality"
+        )  # Get the speciality filter from the request query parameters.
         if speciality_filter:
             # If a speciality filter is provided, filter the queryset based on the speciality.
             return self.queryset.filter(speciality__name__icontains=speciality_filter)
@@ -30,6 +31,6 @@ class IndexHomePageView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         speciality_filter = self.request.GET.get("speciality")
-        if speciality_filter:
+        if speciality_filter and Speciality.objects.filter(name__icontains=speciality_filter).exists():
             context["speciality_filter"] = speciality_filter  # Add the speciality filter to the context.
         return context
