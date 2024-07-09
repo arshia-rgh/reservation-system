@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}
-        Register
+        Login
 {% endblock %}
+
 {% block content %}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-   <button type="submit" value="Register"></button>
+   <button type="submit" value="Login"></button>
 
-    Already have an account? <a href="{% url 'accounts:login' %}">Login here</a>
+    Do not have an account? <a href="{% url 'accounts:register' %}">Register here</a>
 
     </form>
 
