@@ -19,7 +19,13 @@ class DoctorRateForm(forms.ModelForm):
         widgets = {
             "score": forms.NumberInput(attrs={"min": 1, "max": 5}),
         }
-        widgets["score"].input_type = "range"
+
+    def save(self, commit=True):
+        rate = super().save(commit=False)
+        rate.patient = self.cleaned_data["patient"]
+        rate.doctor = self.cleaned_data["doctor"]
+        rate.save()
+        return rate
 
 
 class DoctorCommentForm(forms.ModelForm):
@@ -44,3 +50,10 @@ class DoctorCommentForm(forms.ModelForm):
                 attrs={"placeholder": "Enter your comment here", "class": "form-control", "rows": 5},
             ),
         }
+
+    def save(self, commit=True):
+        comment = super().save(commit=False)
+        comment.patient = self.cleaned_data["patient"]
+        comment.doctor = self.cleaned_data["doctor"]
+        comment.save()
+        return comment
