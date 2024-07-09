@@ -4,7 +4,6 @@ from django.views.generic import DetailView
 from accounts.models import Patient
 from doctors.forms import DoctorRateForm, DoctorCommentForm
 from doctors.models import Doctor
-from surveys.models import Rate, Comment
 
 
 class DoctorDetailView(DetailView):
@@ -24,20 +23,19 @@ class DoctorDetailView(DetailView):
         comment_form = DoctorCommentForm(request.POST)
 
         if rate_form.is_valid():
-            score = rate_form.cleaned_data["score"]
             patient = Patient.objects.get(user=request.user)
-            Rate.objects.create(doctor=doctor, patient=patient, score=score)
+            rate_form.cleaned_data["patient"] = patient
+            rate_form.cleaned_data["doctor"] = doctor
+            rate_form.save()
             messages.success(request, "Your rating has been submitted successfully.")
-
-        if comment_form.is_valid():
-            comment_title = comment_form.cleaned_data["title"]
-            comment_content = comment_form.cleaned_data["content"]
+            return self.get(request, *args, **kwargs)
+        elif comment_form.is_valid():
             patient = Patient.objects.get(user=request.user)
-            Comment.objects.create(
-                doctor=doctor,
-                patient=patient,
-                title=comment_title,
-                content=comment_content,
-            )
+            comment_form.cleaned_data["patient"] = patient
+            comment_form.cleaned_data["doctor"] = doctor
+            comment_form.save()
             messages.success(request, "Your comment has been submitted successfully.")
+            return self.get(request, *args, **kwargs)
+        else:
+            messages.warning(request, "Failed to submit your rating or comment.")
         return self.get(request, *args, **kwargs)
