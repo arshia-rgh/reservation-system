@@ -84,7 +84,7 @@ class Doctor(BaseModelMixin):
         float: The average rating of the doctor.
         """
         average_rating = self.rates.aggregate(avg=Avg("score"))["avg"]
-        return average_rating if average_rating is not None else 0
+        return average_rating if average_rating is not None else "N/A"
 
 
 class Schedule(BaseModelMixin):
