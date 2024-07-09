@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}
+	{{ doctor }}
+{% endblock title %}
+{% block content %}
+	<!-- Doctor's info card -->
+	<div class="card">
+		<div class="card-body">
+			<!-- Doctor's info -->
+			<h5 class="card-title">{{ doctor }}</h5>
+			<p class="card-text">Speciality: {{ doctor.speciality }}</p>
+			<p class="card-text">Phone Number: {{ doctor.phone_number }}</p>
+			<p class="card-text">Email: {{ doctor.email }}</p>
+			<p class="card-text">Address: {{ doctor.address }}</p>
+			<p class="card-text">Fee: {{ doctor.fee }}</p>
+			<p class="card-text">Rate: {{ doctor.rate }} (from 1 to 5)</p>
+			<form action="" method="post" class="mb-3">
+				{% csrf_token %}
+				{{ doctor_rate_form.as_p }}
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+			<!-- Buttons -->
+			{% if user.is_staff and user.is_authenticated %}
+				<a href="#" class="btn btn-primary">Edit</a>
+				<a href="#" class="btn btn-danger">Delete</a>
+			{% endif %}
+			<!-- End Doctor's Info -->
+			<!-- Schedule table -->
+			<h5 class="card-title pt-4">Schedule</h5>
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Day of week</th>
+						<th scope="col">Start Time</th>
+						<th scope="col">End Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for day in doctor.schedules.all %}
+						<tr>
+							<td>{{ day.get_day_of_week_display }}</td>
+							<td>{{ day.start_time }}</td>
+							<td>{{ day.end_time }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<!-- Schedule table end -->
+		</div>
+	</div>
+	<!-- Add Comment Form -->
+	<h5 class="card-title pt-4">Leave a Comment:</h5>
+	<form action="" method="post">
+		{% csrf_token %}
+		{{ doctor_comment_form.as_p }}
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+	<!-- Add Comment Form End -->
+
+	<!-- Comments -->
+	<h5 class="card-title pt-4">Comments:</h5>
+	<div class="card">
+		<div class="card-body">
+			<!-- Comments list -->
+			<ul class="list-group">
+				{% for comment in doctor.comments.all %}
+					<li class="list-group-item">
+						<p class="mb-1">
+							<strong>{{ comment.patient }}</strong> - {{ comment.created_at }}
+						</p>
+						<p class="card-title">{{ comment.title }}</p>
+						<p class="card-text">{{ comment.content }}</p>
+					</li>
+				{% empty %}
+					<p>No comments yet.</p>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+{% endblock content %}
