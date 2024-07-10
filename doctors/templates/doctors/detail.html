@@ -14,11 +14,13 @@
 			<p class="card-text">Address: {{ doctor.address }}</p>
 			<p class="card-text">Fee: {{ doctor.fee }}</p>
 			<p class="card-text">Rate: {{ doctor.rate }} (from 1 to 5)</p>
-			<form action="" method="post" class="mb-3">
-				{% csrf_token %}
-				{{ doctor_rate_form.as_p }}
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</form>
+			{% if user.is_authenticated %}
+				<form action="" method="post" class="mb-3">
+					{% csrf_token %}
+					{{ doctor_rate_form.as_p }}
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			{% endif %}
 			<!-- Buttons -->
 			{% if user.is_staff and user.is_authenticated %}
 				<a href="#" class="btn btn-primary">Edit</a>
@@ -50,11 +52,13 @@
 	</div>
 	<!-- Add Comment Form -->
 	<h5 class="card-title pt-4">Leave a Comment:</h5>
-	<form action="" method="post">
-		{% csrf_token %}
-		{{ doctor_comment_form.as_p }}
-		<button type="submit" class="btn btn-primary">Submit</button>
-	</form>
+	{% if user.is_authenticated %}
+		<form action="" method="post">
+			{% csrf_token %}
+			{{ doctor_comment_form.as_p }}
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	{% endif %}
 	<!-- Add Comment Form End -->
 
 	<!-- Comments -->
