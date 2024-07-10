@@ -1,30 +1,29 @@
 {% extends "base.html" %}
 {% block title %}
-	{{ doctor }}
+	{{ object }}
 {% endblock title %}
 {% block content %}
 	<!-- Doctor's info card -->
 	<div class="card">
 		<div class="card-body">
 			<!-- Doctor's info -->
-			<h5 class="card-title">{{ doctor }}</h5>
-			<p class="card-text">Speciality: {{ doctor.speciality }}</p>
-			<p class="card-text">Phone Number: {{ doctor.phone_number }}</p>
-			<p class="card-text">Email: {{ doctor.email }}</p>
-			<p class="card-text">Address: {{ doctor.address }}</p>
-			<p class="card-text">Fee: {{ doctor.fee }}</p>
-			<p class="card-text">Rate: {{ doctor.rate }} (from 1 to 5)</p>
-			{% if user.is_authenticated %}
-				<form action="" method="post" class="mb-3">
-					{% csrf_token %}
-					{{ doctor_rate_form.as_p }}
-					<button type="submit" class="btn btn-primary">Submit</button>
-				</form>
-			{% endif %}
+			<h5 class="card-title">{{ object }}</h5>
+			<p class="card-text">Speciality: {{ object.speciality }}</p>
+			<p class="card-text">Phone Number: {{ object.phone_number }}</p>
+			<p class="card-text">Email: {{ object.email }}</p>
+			<p class="card-text">Address: {{ object.address }}</p>
+			<p class="card-text">Fee: {{ object.fee }}</p>
+			<p class="card-text">Rate: {{ object.rate }} ({{ object.rates.count }})</p>
+			<div class="mb-3">
+				{% if user.is_authenticated %}
+					<a href="#" class="btn btn-primary">Send Rate</a>
+				{% endif %}
+			</div>
 			<!-- Buttons -->
 			{% if user.is_staff and user.is_authenticated %}
 				<a href="#" class="btn btn-primary">Edit</a>
 				<a href="#" class="btn btn-danger">Delete</a>
+				<a href="#" class="btn btn-warning">Set Appointment</a>
 			{% endif %}
 			<!-- End Doctor's Info -->
 			<!-- Schedule table -->
@@ -38,7 +37,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for day in doctor.schedules.all %}
+					{% for day in object.schedules.all %}
 						<tr>
 							<td>{{ day.get_day_of_week_display }}</td>
 							<td>{{ day.start_time }}</td>
@@ -51,23 +50,18 @@
 		</div>
 	</div>
 	<!-- Add Comment Form -->
-	<h5 class="card-title pt-4">Leave a Comment:</h5>
 	{% if user.is_authenticated %}
-		<form action="" method="post">
-			{% csrf_token %}
-			{{ doctor_comment_form.as_p }}
-			<button type="submit" class="btn btn-primary">Submit</button>
-		</form>
+		<a class="btn btn-primary mt-2">Write Comment</a>
 	{% endif %}
 	<!-- Add Comment Form End -->
 
 	<!-- Comments -->
-	<h5 class="card-title pt-4">Comments:</h5>
+	<h5 class="card-title pt-4">Comments: ({{ object.comments.count }})</h5>
 	<div class="card">
 		<div class="card-body">
 			<!-- Comments list -->
 			<ul class="list-group">
-				{% for comment in doctor.comments.all %}
+				{% for comment in object.comments.all %}
 					<li class="list-group-item">
 						<p class="mb-1">
 							<strong>{{ comment.patient }}</strong> - {{ comment.created_at }}
