@@ -11,7 +11,7 @@ class Comment(BaseModelMixin):
     Model representing a comment made by a patient on a doctor's profile.
 
     Attributes:
-    doctor: The doctor to whom the comment is made.
+    doctor: the doctor whom the comment is for.
     patient: The patient who made the comment.
     title: The title of the comment.
     content: The content of the comment.
