@@ -1,5 +1,7 @@
 from django.core.validators import RegexValidator
 from django.db import models
+from django.db.models import Avg
+from django.urls import reverse
 
 from utils import BaseModelMixin
 
@@ -57,6 +59,33 @@ class Doctor(BaseModelMixin):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    def get_absolute_url(self):
+        """
+        Returns the absolute URL of the doctor's detail page.
+
+        Parameters:
+        self (Doctor): The instance of the Doctor model.
+
+        Returns:
+        str: The absolute URL of the doctor's detail page.
+
+        This method uses Django's reverse function to generate the URL for the
+        'detail' view of the 'doctors' app, passing the primary key (pk) of the
+        doctor as an argument. The generated URL is returned as a string.
+        """
+        return reverse("doctors:detail", args=[self.pk])
+
+    @property
+    def rate(self):
+        """
+        Returns the average rating of the doctor.
+
+        Returns:
+        float: The average rating of the doctor.
+        """
+        average_rating = self.rates.aggregate(avg=Avg("score"))["avg"]
+        return average_rating if average_rating is not None else "N/A"
+
 
 class Schedule(BaseModelMixin):
     """
@@ -82,6 +111,9 @@ class Schedule(BaseModelMixin):
     day_of_week = models.IntegerField(choices=DayOfWeek.choices)
     start_time = models.TimeField()
     end_time = models.TimeField()
+
+    class Meta:
+        ordering = ("day_of_week",)
 
     def __str__(self):
         return f"{self.doctor.first_name} {self.doctor.last_name} - {self.get_day_of_week_display()}"

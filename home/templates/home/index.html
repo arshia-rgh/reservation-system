@@ -17,7 +17,7 @@
                                 <p class="card-text"><a
                                         href="{% url 'home:index' %}?speciality={{ doctor.speciality }}">{{ doctor.speciality }}</a>
                                 </p>
-                                <a href="#" class="btn btn-primary">Detail</a>
+	                            <a href="{{ doctor.get_absolute_url }}" class="btn btn-primary">Detail</a>
                             </div>
                         </div>
                     </div>
