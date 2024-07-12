@@ -1,0 +1,21 @@
+{% block appointments %}
+<div class="box" value="Due-Appointments" style=" overflow-y: scroll;">
+    <p>Your Due appointments :</p>
+    {% for appointment in not_attended %}  
+    <div class = "appointment">
+        <p> {{appointment.doctor}} </p>
+        <p>{{appointment.start_date}} </p>
+    </div>
+    {% endfor %}
+</div>
+<div class="box" value="Appointments" style=" overflow-y: scroll;">
+    <p>Your previous appointments:</p>
+    {% for appointment in attended %}  
+    <div class = "appointment">
+        <p> {{appointment.doctor}} </p>
+        <p>{{appointment.start_date}} </p>
+    </div> 
+    {% endfor %}
+</div>
+<a href="{% url "home:index" %} " >Make an appointment?</a>
+{% endblock appointments %}

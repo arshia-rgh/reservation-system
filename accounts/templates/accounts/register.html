@@ -2,15 +2,18 @@
 {% block title %}
         Register
 {% endblock %}
+{% load static %}
+{%block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{%endblock%}
 {% block content %}
-    <form method="post">
+    <form method="post"class= "form-container">
         {% csrf_token %}
         {{ form.as_p }}
-   <button type="submit" value="Register"></button>
-
-    Already have an account? <a href="{% url 'accounts:login' %}">Login here</a>
-
+    
+    <button type="submit" value="Register" class= "btn">Register</button>
     </form>
-
+    <p>Already have an account?</p>
+    <a href="{% url 'accounts:login' %}"> Login here</a>
 
 {% endblock %}
