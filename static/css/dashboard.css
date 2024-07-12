@@ -1,0 +1,73 @@
+body{
+    height: 100svh;
+    width: 100svw;
+}
+
+.jumbotron {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+    gap: 1%;
+    padding: 1%;
+    margin: 1%;
+    height: 100%;
+    background-color: #e9ecef;
+}
+.scope{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: auto;
+    width:48%;
+}
+.box{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 1%;
+    height: 45%;
+    width:100%;
+    background-color: rgb(172, 255, 218);
+}
+.box p{
+    color :rgb(12, 35, 84);
+}
+.box .btn{
+    border: 1px,solid rgb(12, 35, 84);
+    background-color: rgb(131, 170, 255);
+    color : rgb(35, 47, 71);
+    padding: 5%;
+}
+.appointment{
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 1%;
+    padding:1%;
+}
+.appointment p{
+    color: rgb(60, 4, 4);
+}
+.pview {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    height: 45%;
+    background-color: #dee1e5be;
+}
+.profile{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    list-style-type: none;
+    align-items: center;
+    margin: 1%;
+
+}

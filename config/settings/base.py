@@ -62,13 +62,15 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
-                "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.request",
             ],
         },
     },
 ]
+
+LOGIN_REDIRECT_URL = "/"
 
 WSGI_APPLICATION = "config.wsgi.application"
 

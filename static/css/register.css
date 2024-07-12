@@ -1,0 +1,29 @@
+body{
+    height: 100svh;
+    width: 100svw;
+}
+.jumbotron {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2%;
+    margin: 1%;
+    background-color: #e9ecef;
+}
+.form-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-items: space-between;
+    width: 95%;
+    height: 95%;
+    gap: 2%;
+    margin: 2% auto;
+    padding: 1%;
+    background-color: white;
+    
+}
+.form-container .btn{
+    background-color: rgb(41, 250, 145);    
+}
