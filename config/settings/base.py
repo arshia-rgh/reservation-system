@@ -147,7 +147,8 @@ LOGGING = {
     
     'loggers': {
         '': {
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'level': 'DEBUG',
+            # 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
             'handlers': ['file', 'console'],
         }
     },
