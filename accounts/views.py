@@ -1,6 +1,7 @@
 import secrets
 
 from django.conf import settings
+from django.utils import timezone as tz
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import (LoginRequiredMixin,
@@ -127,6 +128,12 @@ def logout_view(request):
 
 
 class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    """
+        Dashboard View provides a page for the patient to have access to :
+            -profile details
+            -wallet details
+            -appointment details
+    """
     login_url = "login/"
     permission_required="accounts.view_patient"
     template_name = "accounts/dashboard.html"
@@ -137,7 +144,7 @@ class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, View):
     
     def get(self,request):
         patient = get_object_or_404(Patient, user= request.user)
-        context ={}
+        context ={"now": tz.now() }
         context["patient"] = patient
         context["appointments"] = {
             "attended": patient.appointments.filter(attended=True),

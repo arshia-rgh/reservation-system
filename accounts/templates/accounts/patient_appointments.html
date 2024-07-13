@@ -1,19 +1,26 @@
 {% block appointments %}
 <div class="box" value="Due-Appointments" style=" overflow-y: scroll;">
     <p>Your Due appointments :</p>
-    {% for appointment in not_attended %}  
-    <div class = "appointment">
-        <p> {{appointment.doctor}} </p>
-        <p>{{appointment.start_date}} </p>
-    </div>
+    {% for appointment in not_attended%}
+        <div class = "appointment">
+            <p> {{appointment.doctor}} </p>
+            {% if appointment.start_date < now %}
+                <p>{{appointment.start_date}} </p>
+            {% else %}
+                <p class="alert"> You've missed it!<p>
+                <p>{{appointment.start_date}}</p>
+            {%endif %}
+            <a href="{{ appointment.get_absolute_url }}" class="btn btn-primary">Detail</a>
+        </div>
     {% endfor %}
 </div>
 <div class="box" value="Appointments" style=" overflow-y: scroll;">
-    <p>Your previous appointments:</p>
+    <title>Your History of appointments:</title>
     {% for appointment in attended %}  
-    <div class = "appointment">
+    <div class = "appointment" >
         <p> {{appointment.doctor}} </p>
         <p>{{appointment.start_date}} </p>
+        <a href="{{ appointment.get_absolute_url }}" class="btn btn-primary">Detail</a>
     </div> 
     {% endfor %}
 </div>
