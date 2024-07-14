@@ -1,3 +1,5 @@
+import secrets
+
 from django.core.validators import RegexValidator
 from django.db import models
 
@@ -33,4 +35,13 @@ class Patient(BaseModelMixin):
         Returns:
         str: The full name of the user.
         """
+        return self.user.get_full_name()
+
+
+class OtpToken(BaseModelMixin):
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="otps")
+    otp_code = models.CharField(max_length=6, default=secrets.token_hex(3))
+    otp_expires_at = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
         return self.user.get_full_name()

@@ -23,6 +23,10 @@ class LoginEmailView(LoginView):
     form_class = LoginEmailForm
 
 
+def login_by_otp(request):
+    pass
+
+
 def logout_view(request):
     logout(request)
     return redirect("/")
