@@ -9,6 +9,7 @@
         {{ form.as_p }}
    <button type="submit" value="Login"></button>
     <button type="button" href="{% url 'accounts:login' %}">Login By Username</button>
+    <button type="button" href="{% url 'accounts:login_by_otp' %}">Login By One Time Password</button>
 
     Do not have an account? <a href="{% url 'accounts:register' %}">Register here</a>
 

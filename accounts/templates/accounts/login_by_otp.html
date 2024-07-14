@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-        Login
+        Login By Otp
 {% endblock %}
 
 {% block content %}
@@ -8,11 +8,10 @@
         {% csrf_token %}
         {{ form.as_p }}
    <button type="submit" value="Login"></button>
+    <button type="button" href="{% url 'accounts:login' %}">Login By Username</button>
     <button type="button" href="{% url 'accounts:login_by_email' %}">Login By Email</button>
-    <button type="button" href="{% url 'accounts:login_by_otp' %}">Login By One Time Password</button>
 
     Do not have an account? <a href="{% url 'accounts:register' %}">Register here</a>
-
 
     </form>
 
