@@ -22,9 +22,7 @@ class Migration(migrations.Migration):
                 max_length=255,
                 unique=True,
                 validators=[
-                    django.core.validators.RegexValidator(
-                        "^[a-zA-Z]+$", "Specialty name must contain only letters."
-                    )
+                    django.core.validators.RegexValidator("^[a-zA-Z]+$", "Specialty name must contain only letters.")
                 ],
             ),
         ),

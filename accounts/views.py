@@ -29,24 +29,25 @@ class LoginUsernameView(LoginView):
 
 
 def login_by_email(request):
-    if request.method == 'GET':
+    if request.method == "GET":
         form = LoginEmailForm()
-        return render(request, 'accounts/login_by_email.html', context={"form": form})
+        return render(request, "accounts/login_by_email.html", context={"form": form})
 
     if request.method == "POST":
         form = LoginEmailForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/')
+                return redirect("/")
             else:
-                return render(request, 'accounts/login_by_email.html',
-                              {'form': form, 'error': 'Invalid email or password.'})
+                return render(
+                    request, "accounts/login_by_email.html", {"form": form, "error": "Invalid email or password."}
+                )
         else:
-            return render(request, 'accounts/login_by_email.html', {'form': form})
+            return render(request, "accounts/login_by_email.html", {"form": form})
 
 
 def send_otp(user, otp_code):
@@ -59,7 +60,9 @@ def send_otp(user, otp_code):
 
                                    """
     sender = settings.EMAIL_HOST_USER
-    receiver = [user.email, ]
+    receiver = [
+        user.email,
+    ]
 
     send_mail(
         subject,
@@ -71,36 +74,39 @@ def send_otp(user, otp_code):
 
 
 def login_by_otp(request):
-    if request.method == 'GET':
+    if request.method == "GET":
         form = OtpForm()
-        return render(request, 'accounts/login_by_otp.html', {'form': form})
-    elif request.method == 'POST':
+        return render(request, "accounts/login_by_otp.html", {"form": form})
+    elif request.method == "POST":
         form = OtpForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('email')
-            otp_code = form.cleaned_data.get('otp_code')
+            email = form.cleaned_data.get("email")
+            otp_code = form.cleaned_data.get("otp_code")
             user = User.objects.filter(email=email).first()
             if user:
                 if otp_code:
-                    otp_token = OtpToken.objects.filter(user=user, otp_code=otp_code,
-                                                        otp_expires_at__gte=timezone.now()).first()
+                    otp_token = OtpToken.objects.filter(
+                        user=user, otp_code=otp_code, otp_expires_at__gte=timezone.now()
+                    ).first()
                     if otp_token:
                         login(request, user)
-                        return redirect('/')
+                        return redirect("/")
                     else:
-                        return render(request, 'accounts/login_by_otp.html',
-                                      {'form': form, 'error': 'Invalid or expired OTP.'})
+                        return render(
+                            request, "accounts/login_by_otp.html", {"form": form, "error": "Invalid or expired OTP."}
+                        )
                 else:
                     otp_code = secrets.token_hex(3)
                     otp_expires_at = timezone.now() + timezone.timedelta(minutes=5)
                     OtpToken.objects.create(user=user, otp_code=otp_code, otp_expires_at=otp_expires_at)
                     send_otp(user, otp_code)
-                    return render(request, 'accounts/login_by_otp.html',
-                                  {'form': form, 'message': 'OTP sent to your email.'})
+                    return render(
+                        request, "accounts/login_by_otp.html", {"form": form, "message": "OTP sent to your email."}
+                    )
             else:
-                return render(request, 'accounts/login_by_otp.html', {'form': form, 'error': 'Email not found.'})
+                return render(request, "accounts/login_by_otp.html", {"form": form, "error": "Email not found."})
         else:
-            return render(request, 'accounts/login_by_otp.html', {'form': form})
+            return render(request, "accounts/login_by_otp.html", {"form": form})
 
 
 def logout_view(request):
