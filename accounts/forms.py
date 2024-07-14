@@ -5,8 +5,20 @@ from django.contrib.auth.models import User
 from .models import Patient
 
 
-class LoginForm(AuthenticationForm):
+class LoginUsernameForm(AuthenticationForm):
     pass
+
+
+class LoginEmailForm(forms.Form):
+    email = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={"placeholder": "Enter email-address"})
+    )
+    password = forms.CharField(
+        label="Password",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
+    )
 
 
 class RegisterForm(UserCreationForm):
