@@ -1,10 +1,21 @@
-from django.contrib.auth import logout
-from django.contrib.auth.views import LoginView
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
+import secrets
 
-from accounts.forms import RegisterForm, LoginUsernameForm, LoginEmailForm
+from django.conf import settings
+from django.contrib.auth import login
+from django.contrib.auth import logout
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+from django.core.mail import send_mail
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.utils import timezone
+from django.views.generic import CreateView
+from dotenv import load_dotenv
+
+from accounts.forms import RegisterForm, LoginUsernameForm, LoginEmailForm, OtpForm
+from .models import OtpToken
+
+load_dotenv()
 
 
 class RegisterView(CreateView):
@@ -23,8 +34,58 @@ class LoginEmailView(LoginView):
     form_class = LoginEmailForm
 
 
+def send_otp(user, otp_code):
+    subject = "Email Verification"
+    message = f"""
+                                   Hi {user.username}, here is your OTP {otp_code} 
+                                   load_dotenv(os.path.join(BASE_DIR, ".env"))
+
+                                   it expires in 5 minute.
+
+                                   """
+    sender = settings.EMAIL_HOST_USER
+    receiver = [user.email, ]
+
+    send_mail(
+        subject,
+        message,
+        sender,
+        receiver,
+        fail_silently=False,
+    )
+
+
 def login_by_otp(request):
-    pass
+    if request.method == 'GET':
+        form = OtpForm()
+        return render(request, 'accounts/login_by_otp.html', {'form': form})
+    elif request.method == 'POST':
+        form = OtpForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            otp_code = form.cleaned_data.get('otp_code')
+            user = User.objects.filter(email=email).first()
+            if user:
+                if otp_code:
+                    otp_token = OtpToken.objects.filter(user=user, otp_code=otp_code,
+                                                        otp_expires_at__gte=timezone.now()).first()
+                    if otp_token:
+                        login(request, user)
+                        return redirect('some_success_url')
+                    else:
+                        return render(request, 'accounts/login_by_otp.html',
+                                      {'form': form, 'error': 'Invalid or expired OTP.'})
+                else:
+                    otp_code = secrets.token_hex(3)
+                    otp_expires_at = timezone.now() + timezone.timedelta(minutes=5)
+                    OtpToken.objects.create(user=user, otp_code=otp_code, otp_expires_at=otp_expires_at)
+                    send_otp(user, otp_code)
+                    return render(request, 'accounts/login_by_otp.html',
+                                  {'form': form, 'message': 'OTP sent to your email.'})
+            else:
+                return render(request, 'accounts/login_by_otp.html', {'form': form, 'error': 'Email not found.'})
+        else:
+            return render(request, 'accounts/login_by_otp.html', {'form': form})
 
 
 def logout_view(request):
