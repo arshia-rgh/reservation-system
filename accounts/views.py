@@ -54,8 +54,7 @@ def send_otp(user, otp_code):
     subject = "Email Verification"
     message = f"""
                                    Hi {user.username}, here is your OTP {otp_code} 
-                                   load_dotenv(os.path.join(BASE_DIR, ".env"))
-
+                                
                                    it expires in 5 minute.
 
                                    """
