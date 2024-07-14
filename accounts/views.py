@@ -1,8 +1,7 @@
 import secrets
 
 from django.conf import settings
-from django.contrib.auth import login
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
@@ -21,7 +20,7 @@ load_dotenv()
 class RegisterView(CreateView):
     template_name = "accounts/register.html"
     form_class = RegisterForm
-    success_url = reverse_lazy("login")
+    success_url = reverse_lazy("accounts:login")
 
 
 class LoginUsernameView(LoginView):
@@ -29,9 +28,25 @@ class LoginUsernameView(LoginView):
     form_class = LoginUsernameForm
 
 
-class LoginEmailView(LoginView):
-    template_name = "accounts/login_by_email.html"
-    form_class = LoginEmailForm
+def login_by_email(request):
+    if request.method == 'GET':
+        form = LoginEmailForm()
+        return render(request, 'accounts/login_by_email.html', context={"form": form})
+
+    if request.method == "POST":
+        form = LoginEmailForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/')
+            else:
+                return render(request, 'accounts/login_by_email.html',
+                              {'form': form, 'error': 'Invalid email or password.'})
+        else:
+            return render(request, 'accounts/login_by_email.html', {'form': form})
 
 
 def send_otp(user, otp_code):
@@ -71,7 +86,7 @@ def login_by_otp(request):
                                                         otp_expires_at__gte=timezone.now()).first()
                     if otp_token:
                         login(request, user)
-                        return redirect('some_success_url')
+                        return redirect('/')
                     else:
                         return render(request, 'accounts/login_by_otp.html',
                                       {'form': form, 'error': 'Invalid or expired OTP.'})

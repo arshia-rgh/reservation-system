@@ -7,7 +7,7 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-   <button type="submit" value="Login"></button>
+   <button type="submit" value="Login">Login</button>
    <a href="{% url 'accounts:login_by_email' %}"><button type="button">Login By Email</button></a>
    <a href="{% url 'accounts:login_by_otp' %}"> <button type="button">Login By One Time Password</button></a>
 
