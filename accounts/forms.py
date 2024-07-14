@@ -10,10 +10,7 @@ class LoginUsernameForm(AuthenticationForm):
 
 
 class LoginEmailForm(forms.Form):
-    email = forms.EmailField(
-        label="Email",
-        widget=forms.EmailInput(attrs={"placeholder": "Enter email-address"})
-    )
+    email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={"placeholder": "Enter email-address"}))
     password = forms.CharField(
         label="Password",
         strip=False,

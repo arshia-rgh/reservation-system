@@ -19,7 +19,7 @@ class LoginUsernameView(LoginView):
 
 
 class LoginEmailView(LoginView):
-    template_name = 'accounts/login_by_email.html'
+    template_name = "accounts/login_by_email.html"
     form_class = LoginEmailForm
 
 
