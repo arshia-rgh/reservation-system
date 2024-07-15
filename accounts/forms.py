@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 
 from .models import Patient
 
@@ -25,7 +26,11 @@ class OtpForm(forms.Form):
 
 class RegisterForm(UserCreationForm):
     birth_date = forms.DateField(help_text="Required. Format= YYYY-MM-DD")
-    phone_number = forms.CharField(max_length=13, help_text="Required")
+    phone_number = forms.CharField(
+        max_length=13,
+        help_text="Required",
+        validators=[RegexValidator(r"^(09|\+989)\d{9}$", "Invalid Iranian phone number.")],
+    )
     address = forms.CharField()
 
     class Meta(UserCreationForm.Meta):
