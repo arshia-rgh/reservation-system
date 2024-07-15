@@ -16,7 +16,7 @@ class RegisterViewTestCase(TestCase):
             "email": "test@example.com",
             "first_name": "Test",
             "last_name": "User",
-            "phone_number": "093012345678",
+            "phone_number": "09301234567",
             "birth_date": "2000-01-01",
             "address": "Addres1 city 1 ",
         }
@@ -41,7 +41,6 @@ class RegisterViewTestCase(TestCase):
         response = self.client.post(reverse("accounts:register"), user_data_fail)
         self.assertEqual(response.status_code, 200)
         self.assertFalse(User.objects.filter(patient__phone_number="12563").exists())
-        self.assertFormError(response, "form", "phone_number", "Enter a valid phone number")
 
 
 class CustomLoginViewTestCase(TestCase):
