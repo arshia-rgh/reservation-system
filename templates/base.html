@@ -2,19 +2,26 @@
 {% load navbar_tag %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Doctor Appointments System{% endblock %}</title>
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <link rel="stylesheet" href="{% static 'css/base.css' %}">
-        <meta name="viewport" content="width=device-width, initial-">
-    </head>
-    <body>
-        {% navbar %}
-        <div class="jumbotron">
-            {% include 'partials/messages.html' %}
-            {% block content %}{% endblock %}
-        </div>
-        <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    </body>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}
+				Doctor Appointments System
+			{% endblock title %}
+		</title>
+		<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+		<link rel="stylesheet" href="{% static 'css/base.css' %}">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Doctor Appointments System">
+		<meta name="keywords" content="doctor,appointments">
+	</head>
+	<body>
+		{% navbar %}
+		<div class="jumbotron">
+			{% include "partials/messages.html" %}
+			{% block content %}
+			{% endblock content %}
+		</div>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	</body>
 </html>
