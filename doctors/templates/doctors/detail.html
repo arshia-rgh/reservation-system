@@ -16,7 +16,7 @@
 			<p class="card-text">Rate: {{ object.rate }} ({{ object.rates.count }})</p>
 			<div class="mb-3">
 				{% if user.is_authenticated %}
-					<a href="#" class="btn btn-primary">Send Rate</a>
+					<a href="{% url "surveys:rate-create" doctor.pk %}" class="btn btn-primary">Send Rate</a>
 				{% endif %}
 			</div>
 			<!-- Buttons -->
@@ -51,7 +51,7 @@
 	</div>
 	<!-- Add Comment Form -->
 	{% if user.is_authenticated %}
-		<a class="btn btn-primary mt-2">Write Comment</a>
+		<a class="btn btn-primary mt-2" href="{% url "surveys:comment-create" doctor.pk %}">Write Comment</a>
 	{% endif %}
 	<!-- Add Comment Form End -->
 
