@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv
 
 from django.core.management.utils import get_random_secret_key
 
@@ -137,11 +136,10 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
-            'filters': [],
         },
 
         'file': {
-            'level': 'DEBUG',
+            'level': 'WARNING',
             'class': 'logging.FileHandler',
             'filename': 'app.log',
             'formatter': 'verbose',
@@ -151,7 +149,6 @@ LOGGING = {
     'loggers': {
         '': {
             'level': 'DEBUG',
-            # 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
             'handlers': ['file', 'console'],
         }
     },
