@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv
 
 from django.core.management.utils import get_random_secret_key
 
@@ -114,9 +113,53 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "/"
+# Logging Configuration
 
-load_dotenv(os.path.join(BASE_DIR, ".env"))
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'simple': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+
+        'verbose': {
+            "format": "{name} {levelname} {asctime} {module} {process:d} {message}",
+            "style": "{",
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+
+        'file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': 'app.log',
+            'formatter': 'verbose',
+        },
+    },
+    
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['file', 'console'],
+        }
+    },
+
+    'root': { 
+        'level': 'DEBUG',
+        'handlers': ['file', 'console'],
+    }
+}
+
+LOGIN_REDIRECT_URL = "/"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
