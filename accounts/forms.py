@@ -1,5 +1,3 @@
-from typing import Any
-
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import Permission, User
@@ -45,6 +43,7 @@ class RegisterForm(UserCreationForm):
             "birth_date",
             "address",
         )
+        
         
     def save(self, commit=True):
         user = super().save(commit=False)
