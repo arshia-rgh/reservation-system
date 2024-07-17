@@ -20,7 +20,9 @@ class LoginEmailForm(forms.Form):
 
 
 class OtpForm(forms.Form):
-    email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={"placeholder": "Enter email-address"}))
+    phone_number = forms.CharField(
+        label="Phone number", widget=forms.TextInput(attrs={"placeholder": "Enter phone number"})
+    )
     otp_code = forms.CharField(max_length=6, required=False, widget=forms.TextInput(attrs={"placeholder": "Enter OTP"}))
 
 

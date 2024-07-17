@@ -1,23 +1,19 @@
 import secrets
 
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.core.mail import send_mail
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone as tz
 from django.views.generic import CreateView, View
-from dotenv import load_dotenv
+from kavenegar import *
 
 from accounts.forms import LoginEmailForm, LoginUsernameForm, OtpForm, RegisterForm, TransactionForm, UpdatePatientForm
 from .models import OtpToken, Patient
-
-load_dotenv()
 
 
 class RegisterView(CreateView):
@@ -54,25 +50,15 @@ def login_by_email(request):
 
 
 def send_otp(user, otp_code):
-    subject = "Email Verification"
-    message = f"""
-    Hi {user.username}, here is your OTP {otp_code} 
-                                
-    it expires in 5 minute.
-
-    """
-    sender = settings.EMAIL_HOST_USER
-    receiver = [
-        user.email,
-    ]
-
-    send_mail(
-        subject,
-        message,
-        sender,
-        receiver,
-        fail_silently=False,
-    )
+    api = KavenegarAPI("353433357345617434313879623435757278356F3146706D6143396936574D34797369557146376B6E64733D")
+    receptor = user.patient.phone_number
+    params = {
+        "receptor": receptor,
+        "template": "reservationSystem",
+        "token": otp_code,
+        "type": "sms",
+    }
+    api.verify_lookup(params)
 
 
 def login_by_otp(request):
@@ -82,13 +68,13 @@ def login_by_otp(request):
     elif request.method == "POST":
         form = OtpForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get("email")
+            phone_number = form.cleaned_data.get("phone_number")
             otp_code = form.cleaned_data.get("otp_code")
-            user = User.objects.filter(email=email).first()
+            user = User.objects.filter(patient__phone_number=phone_number).first()
             if user:
                 if otp_code:
                     otp_token = OtpToken.objects.filter(
-                        user=user, otp_code=otp_code, otp_expires_at__gte=timezone.now()
+                        user=user, otp_code=otp_code, otp_expires_at__gte=tz.now()
                     ).first()
                     if otp_token:
                         login(request, user)
@@ -99,7 +85,7 @@ def login_by_otp(request):
                         )
                 else:
                     otp_code = secrets.token_hex(3)
-                    otp_expires_at = timezone.now() + timezone.timedelta(minutes=5)
+                    otp_expires_at = tz.now() + tz.timedelta(minutes=5)
                     OtpToken.objects.create(user=user, otp_code=otp_code, otp_expires_at=otp_expires_at)
                     send_otp(user, otp_code)
                     return render(
@@ -156,7 +142,7 @@ class AdminDashboardView(LoginRequiredMixin, PermissionRequiredMixin, View):
     template_name = "accounts/admin_dashboard.html"
     login_url = "login/"
     permission_required=["is_staff"]
-    
+
     def get(self,request):
         return render(request ,
                       "accounts/admin_dashboard.html"
