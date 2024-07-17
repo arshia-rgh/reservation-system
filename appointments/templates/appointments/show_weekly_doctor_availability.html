@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+	{{ doctor }} Weekly Availability
+{% endblock %}
+
+{% block content %}
+	<h1>Book an appointment for a Dr. {{ doctor }}</h1>
+	{% for day, hours in days_of_week.items %}
+		<h2>{{ day }}</h2>
+		{% if hours|length > 0 %}
+			<table class="table table-bordered">
+				<tr>
+					<th>Time</th>
+					<th>Book Status</th>
+				</tr>
+				{% for hour in hours %}
+					<tr>
+						<td>{{ hour.0|time:"H:i" }} </td>
+						<td>
+							{% if hour.1 %}
+								<a href="#" class="btn btn-primary">Book</a>
+							{% else %}
+								Booked
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<p>Closed</p>
+		{% endif %}
+	{% endfor %}
+{% endblock %}
