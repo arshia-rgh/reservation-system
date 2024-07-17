@@ -1,3 +1,4 @@
+{%block navbar%}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home:index' %}">Doctor Appointments System</a>
@@ -19,6 +20,9 @@
 	                   href="{% url 'home:index' %}">Home</a>
                 </li>
                 {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'accounts:dashboard' %}">Dashboard</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'accounts:logout' %}">Logout</a>
                     </li>
@@ -58,3 +62,4 @@
         </div>
     </div>
 </nav>
+{% endblock navbar %}

@@ -17,7 +17,7 @@ class Patient(BaseModelMixin):
     birth_date: The birth date of the patient.
     wallet: The wallet balance of the patient.
     """
-
+    
     user = models.OneToOneField("auth.User", on_delete=models.CASCADE)
     phone_number = models.CharField(
         max_length=13,
@@ -26,7 +26,7 @@ class Patient(BaseModelMixin):
     )
     address = models.CharField(max_length=255, null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)
-    wallet = models.IntegerField(default=0)
+    wallet = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         """
