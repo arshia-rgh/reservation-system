@@ -1,11 +1,12 @@
 from typing import Any
+
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import Permission, User
 from django.core.validators import RegexValidator
 
 from .models import Patient
-from django.contrib.auth.models import Permission
+
 
 class LoginUsernameForm(AuthenticationForm):
     pass
@@ -112,6 +113,7 @@ class TransactionForm(forms.ModelForm):
         exclude = ["wallet"]
         
     def save(self, commit=True):
+        #self.full_clean()
         match (self.cleaned_data["transaction_type"]):
             case "W":
                 if self.cleaned_data["amount"] <= self.instance.wallet:

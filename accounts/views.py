@@ -1,7 +1,6 @@
 import secrets
 
 from django.conf import settings
-from django.utils import timezone as tz
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import (LoginRequiredMixin,
@@ -9,15 +8,16 @@ from django.contrib.auth.mixins import (LoginRequiredMixin,
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.utils import timezone as tz
 from django.views.generic import CreateView, View
 from dotenv import load_dotenv
 
-from accounts.forms import (LoginEmailForm, LoginForm, LoginUsernameForm,
-                            OtpForm, RegisterForm, TransactionForm,
-                            UpdatePatientForm)
+from accounts.forms import (LoginEmailForm, LoginUsernameForm, OtpForm,
+                            RegisterForm, TransactionForm, UpdatePatientForm)
 
 from .models import OtpToken
 
@@ -116,10 +116,6 @@ def login_by_otp(request):
         else:
             return render(request, "accounts/login_by_otp.html", {"form": form})
 
-    form_class = LoginForm
-    authentication_form = LoginForm
-    redirect_authenticated_user= True
-    redirect_field_name="dashboard"
     
 
 def logout_view(request):
@@ -143,7 +139,12 @@ class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, View):
         pass
     
     def get(self,request):
-        patient = get_object_or_404(Patient, user= request.user)
+        
+        try:
+            patient = get_object_or_404(Patient, user= request.user)
+        except Http404:
+            return render(request, "404.html", status=404)
+        
         context ={"now": tz.now() }
         context["patient"] = patient
         context["appointments"] = {
@@ -191,14 +192,20 @@ class ProfileView(LoginRequiredMixin, PermissionRequiredMixin, View):
             context={
                 "patient_data":patient.__dict__,
                 "patient_form":patient_form
-                }
+                },
+            status = 200
            )
         else:
             messages.error(request, "not valid, please try again.")
-            return redirect(to="accounts:patient")
+            return redirect(to="accounts:profile")
         
 
 class WalletView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    """
+    A view for transaction. Works with Patient.wallet. Uses a Transaction Form
+    Currently, does not provide actual money transfering ability.
+    """
+    
     login_url = "login/"
     permission_required = ("accounts.change_patient","accounts.view_patient")
     
@@ -222,4 +229,3 @@ class WalletView(LoginRequiredMixin, PermissionRequiredMixin, View):
             message = transaction_form.save()
             messages.success(request,message)
         return redirect(to="accounts:wallet")
-        

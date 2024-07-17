@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (CustomLoginView, DashboardView, LoginUsernameView,
+from .views import (LoginUsernameView, DashboardView, LoginUsernameView,
                     ProfileView, RegisterView, WalletView, login_by_email,
                     login_by_otp, logout_view)
 
