@@ -27,6 +27,7 @@ urlpatterns = [
     path("doctors/", include("doctors.urls")),
     path("appointments/", include("appointments.urls")),
     path("accounts/", include("accounts.urls")),
+    path("surveys/", include("surveys.urls")),
 ]
 
 # In runserver with gunicorn, added the staticfiles_urlpatterns() to the urlpatterns list.
