@@ -1,6 +1,8 @@
+from django.contrib import messages
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
+from django.views import View
 from django.views.generic import TemplateView
 
 from accounts.mixins import LoginPatientRequiredMixin
@@ -35,7 +37,9 @@ class ShowWeeklyDoctorAvailabilityView(LoginPatientRequiredMixin, TemplateView):
                 current_time = start_time
                 while current_time + slot_duration <= end_time:
                     slot_end = current_time + slot_duration
-                    if not Appointment.objects.filter(Q(start_date__range=(current_time, slot_end))).exists():
+                    if not Appointment.objects.filter(
+                            Q(start_date__gte=current_time) & Q(start_date__lt=slot_end)
+                    ).exists():
                         available_slots.append((current_time, True))
                     else:
                         available_slots.append((current_time, False))
@@ -64,3 +68,17 @@ class ShowWeeklyDoctorAvailabilityView(LoginPatientRequiredMixin, TemplateView):
         # generate table headers from days of week
         context["days_of_week"] = available_slots
         return context
+
+
+class BookingAppointmentView(LoginPatientRequiredMixin, View):
+    def get(self, request, doctor_pk, start_time):
+        start_datetime = timezone.datetime.fromisoformat(start_time)
+        doctor = get_object_or_404(Doctor, pk=doctor_pk)
+        patient = self.request.user.patient
+        Appointment.objects.create(
+            doctor=doctor,
+            patient=patient,
+            start_date=start_datetime,
+        )
+        messages.success(request, "Booking submitted successfully.")
+        return redirect("appointments:show_weekly_doctor_availability", doctor_pk=doctor_pk)

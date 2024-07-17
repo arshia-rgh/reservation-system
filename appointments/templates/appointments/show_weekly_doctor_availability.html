@@ -19,7 +19,8 @@
 						<td>{{ hour.0|time:"H:i" }} </td>
 						<td>
 							{% if hour.1 %}
-								<a href="#" class="btn btn-primary">Book</a>
+								<a href="{% url "appointments:booking-appointment" doctor.pk hour.0 %}"
+								   class="btn btn-primary">Book</a>
 							{% else %}
 								Booked
 							{% endif %}
