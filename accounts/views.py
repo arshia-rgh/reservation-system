@@ -89,10 +89,12 @@ def login_by_otp(request):
                     OtpToken.objects.create(user=user, otp_code=otp_code, otp_expires_at=otp_expires_at)
                     send_otp(user, otp_code)
                     return render(
-                        request, "accounts/login_by_otp.html", {"form": form, "message": "OTP sent to your email."}
+                        request,
+                        "accounts/login_by_otp.html",
+                        {"form": form, "message": "OTP sent to your phone number."},
                     )
             else:
-                return render(request, "accounts/login_by_otp.html", {"form": form, "error": "Email not found."})
+                return render(request, "accounts/login_by_otp.html", {"form": form, "error": "phone number not found."})
         else:
             return render(request, "accounts/login_by_otp.html", {"form": form})
 
