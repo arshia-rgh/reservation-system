@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}
+        Register
+{% endblock %}
+{% load static %}
+
+{% block content %}
+    <div>
+        Your wallet balance : {{wallet_balance}}
+    </div>
+    <form method="post" class= "form-container">{% csrf_token %}
+        {{transaction_form}}
+    <button type="submit" value="Transact" class= "btn">Register</button>
+    </form>
+{% endblock content %}

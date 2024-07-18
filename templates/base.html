@@ -14,11 +14,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="Doctor Appointments System">
 		<meta name="keywords" content="doctor,appointments">
+		{% block extra_css %}{% endblock %}
 	</head>
 	<body>
-		{% navbar %}
+		{%block navbar%}
+        {% navbar %}
+        {% endblock navbar%}
+		{% include "partials/messages.html" %}
 		<div class="jumbotron">
-			{% include "partials/messages.html" %}
 			{% block content %}
 			{% endblock content %}
 		</div>
