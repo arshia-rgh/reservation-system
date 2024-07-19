@@ -1,9 +1,15 @@
 .jumbotron {
-    padding: 20px;
-    margin-bottom: 20px;
+    max-height: 82%;
+    max-width: 100%;
+    overflow: auto;
+    padding: 2%;
+    margin: 2%;
     background-color: #e9ecef;
 }
-
+.navbar{
+    max-height: 18%;
 body {
+    max-height: 100vh;
+    max-width: 100vw;
     background-color: #e9ecef;
 }

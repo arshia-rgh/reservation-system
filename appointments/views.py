@@ -169,3 +169,9 @@ class BookingAppointmentView(LoginPatientRequiredMixin, View):
             order.clear()
             messages.warning(request, "Failed to book appointment. Please try again.")
             return redirect("appointments:show_weekly_doctor_availability", doctor_pk=doctor.pk)
+
+
+
+class AppointmentDetailView(DetailView):
+    model = Appointment
+    template_name = "appointments/detail.html"

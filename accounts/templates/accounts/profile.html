@@ -1,0 +1,54 @@
+{%extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static "css/profile.css" %}">
+{% endblock extra_css%}
+{% block content %}
+<div class = "pview">
+    <p>Your Profile Details :</p>
+    <ul class="profile">
+        <li>
+            <p>
+                Username : {{user.username}}
+            </p>
+        </li>
+        <li>
+            <p>
+                first name : {{user.first_name}}
+            </p>
+        </li>
+        <li>
+            <p>
+                Last name : {{user.last_name}}
+            </p>
+        </li>
+        <li>
+            <p>
+                Phone : {{patient_data.phone_number}}
+            </p>
+        </li>
+        <li>
+            <p>
+                Birth Date : {{patient_data.birth_date}}
+            </p>
+        </li>
+        <li>
+            <p>
+                Address : {{patient_data.address}}
+            </p>
+        </li>
+        <li>
+            <p>
+                Wallet balance : {{patient_data.wallet}}
+            </p>
+        </li>
+
+    </ul>
+</div>
+<div class="pview">
+    <form method="post" class="profile">{% csrf_token %}
+        {{patient_form.as_p}}
+        <button type="submit">change</button>
+    </form>
+</div>
+{% endblock %}

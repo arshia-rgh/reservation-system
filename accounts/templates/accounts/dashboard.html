@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{%load static %}
+{%load patient_appointments_tag%}
+{%block extra_css %}
+  <link rel="stylesheet" href="{% static "css/dashboard.css" %}">
+{%endblock%}
+{%block title %} Welcome {{patient.user.firstname}} {% endblock %}
+{% block content%}
+  <div class="scope">
+    {% block appointments %}
+    {% appointments %}
+    {% endblock appointments %}
+  </div>
+  <div class="scope">
+    <div class="box" >
+      <button class="btn" type="submit"><a href="{% url "accounts:profile"%}"> Profile</a></button>
+    </div>
+    <div class="box wallet">
+      <p>
+          your wallet balance: {{patient.wallet}}
+      </p>
+      <button class="btn" type="submit"><a href="{% url "accounts:wallet"%}"> Transact?</a></button>
+    </div>
+  </div>
+
+  
+{%endblock content%}

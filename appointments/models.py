@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from accounts.models import Patient
 from doctors.models import Doctor
@@ -20,3 +21,7 @@ class Appointment(BaseModelMixin):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="appointments")
     start_date = models.DateTimeField(null=False, blank=False)
     attended = models.BooleanField(default=False)
+
+
+    def get_absolute_url(self):
+        return reverse("appointments:detail", args=[self.pk])

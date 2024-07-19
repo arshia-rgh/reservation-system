@@ -1,0 +1,57 @@
+.jumbotron {
+    padding: 2%;
+    margin: 1%;
+    background-color: #e9ecef;
+}
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width:50vh;
+    height:fit-content;
+    margin: 3% auto;
+    padding: 2%;
+    background-color: white;
+    
+} 
+.form-container .btn {
+    background-color: #18f0a1;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom:10px;
+    opacity: 0.8;
+}
+.form-container .cancel{
+    background-color: #f0184e;
+}
+
+.form-container input[type=text], .form-container input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+}
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+.form-container .btn:hover, .open-button:hover {
+    opacity: 1;
+}

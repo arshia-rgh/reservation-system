@@ -5,8 +5,8 @@ from doctors.models import Speciality
 register = template.Library()
 
 
-@register.inclusion_tag("partials/navbar.html")
-def navbar():
+@register.inclusion_tag("partials/navbar.html", takes_context=True)
+def navbar(context):
     """
     This function is a Django template inclusion tag that retrieves all specialities from the database
     and passes them to the "partials/navbar.html" template for rendering.
@@ -23,4 +23,5 @@ def navbar():
     {% load navbar %}
     ```
     """
-    return {"specialities": Speciality.objects.all()}
+    return {"specialities": Speciality.objects.all(),
+            "user": context["user"]}
