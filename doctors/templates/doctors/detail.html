@@ -23,7 +23,8 @@
 			{% if user.is_staff and user.is_authenticated %}
 				<a href="#" class="btn btn-primary">Edit</a>
 				<a href="#" class="btn btn-danger">Delete</a>
-				<a href="#" class="btn btn-warning">Set Appointment</a>
+				<a href="{% url "appointments:show_weekly_doctor_availability" doctor.pk %}" class="btn btn-warning">Set
+					Appointment</a>
 			{% endif %}
 			<!-- End Doctor's Info -->
 			<!-- Schedule table -->
