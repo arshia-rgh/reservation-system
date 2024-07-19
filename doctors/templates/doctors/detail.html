@@ -17,15 +17,17 @@
 			<div class="mb-3">
 				{% if user.is_authenticated %}
 					<a href="{% url "surveys:rate-create" doctor.pk %}" class="btn btn-primary">Send Rate</a>
+					<a href="{% url "appointments:show_weekly_doctor_availability" doctor.pk %}"
+					   class="btn btn-warning">Set Appointment
+					</a>
 				{% endif %}
 			</div>
 			<!-- Buttons -->
 			{% if user.is_staff and user.is_authenticated %}
 				<a href="{% url "doctors:update" doctor.pk %}" class="btn btn-primary">Edit</a>
 				<a href="{% url "doctors:delete" doctor.pk %}" class="btn btn-danger">Delete</a>
-				<a href="{% url "doctors:schedule-create" doctor.pk %}" class="btn btn-secondary" >Create a Schedule</a>
-				<a href="{% url "appointments:show_weekly_doctor_availability" doctor.pk %}" class="btn btn-warning">Set
-					Appointment</a>
+				<a href="{% url "doctors:schedule-create" doctor.pk %}" class="btn btn-secondary">Create a Schedule</a>
+
 			{% endif %}
 			<!-- End Doctor's Info -->
 			<!-- Schedule table -->
@@ -46,8 +48,8 @@
 							<td>{{ day.start_time }}</td>
 							<td>{{ day.end_time }}</td>
 							{% if user.is_staff %}
-								<td><a href="{% url "doctors:schedule-update" day.pk %}" >edit</a></td>
-							{%endif%}
+								<td><a href="{% url "doctors:schedule-update" day.pk %}">edit</a></td>
+							{% endif %}
 						</tr>
 					{% endfor %}
 				</tbody>

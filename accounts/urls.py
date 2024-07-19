@@ -8,7 +8,7 @@ from .views import (
     WalletView,
     login_by_email,
     login_by_otp,
-    logout_view,
+    logout_view, AdminDashboardView,
 )
 
 app_name = "accounts"

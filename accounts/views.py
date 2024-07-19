@@ -1,5 +1,4 @@
 import secrets
-from datetime import datetime
 
 from django.conf import settings
 from django.contrib import messages
@@ -11,7 +10,7 @@ from django.core.mail import send_mail
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.utils import timezone
+from django.utils import timezone as tz
 from django.views.generic import CreateView, View
 from dotenv import load_dotenv
 
