@@ -1,13 +1,24 @@
+import datetime
+import enum
+
 from django.contrib import messages
+from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views import View
 from django.views.generic import TemplateView
 
 from accounts.mixins import LoginPatientRequiredMixin
 from appointments.models import Appointment
+from appointments.order import Order
 from doctors.models import Schedule, Doctor
+from utils.zarinpal import verify, send_request
+
+
+class PaymentMethod(enum.Enum):
+    WALLET = "wallet"
+    GATEWAY = "gateway"
 
 
 class ShowWeeklyDoctorAvailabilityView(LoginPatientRequiredMixin, TemplateView):
@@ -17,7 +28,7 @@ class ShowWeeklyDoctorAvailabilityView(LoginPatientRequiredMixin, TemplateView):
     def get_current_week():
         current_date = timezone.now()
 
-        start_date = current_date 
+        start_date = current_date
         end_date = start_date + timezone.timedelta(days=7)
         return start_date, end_date
 
@@ -73,15 +84,88 @@ class ShowWeeklyDoctorAvailabilityView(LoginPatientRequiredMixin, TemplateView):
         return context
 
 
-class BookingAppointmentView(LoginPatientRequiredMixin, View):
-    def get(self, request, doctor_pk, start_time):
-        start_datetime = timezone.datetime.fromisoformat(start_time)
+class CheckoutAppointmentOrderView(LoginPatientRequiredMixin, View):
+    @staticmethod
+    def get(request, doctor_pk, start_date):
         doctor = get_object_or_404(Doctor, pk=doctor_pk)
+        start_date = datetime.datetime.fromisoformat(start_date).strftime("%Y-%m-%d %H:%M")
+        context = {"doctor": doctor, "start_date": start_date}
+        return render(request, "appointments/checkout_appointment_order.html", context)
+
+    @staticmethod
+    def post(request: WSGIRequest, doctor_pk, start_date):
+        doctor = get_object_or_404(Doctor, pk=doctor_pk)
+        payment_method = request.POST.get("payment_method")
+        order = Order(request)
+        order.add(doctor_pk, start_date, doctor.fee)
+        request.session.modified = True
+        return redirect("appointments:payment-order", payment_method=payment_method)
+
+
+class PaymentAppointmentOrderView(LoginPatientRequiredMixin, View):
+    @staticmethod
+    def get(request: WSGIRequest, payment_method):
+        order = Order(request)
+        price = order.get_price()
+        if payment_method == PaymentMethod.WALLET.value:
+            patient = request.user.patient
+            patient.wallet -= price
+            return redirect("appointments:booking-appointment")
+        else:
+            response = send_request(
+                request, price, f"Appointment Order", request.user.patient.phone_number, request.user.email
+            )
+            return redirect(response["url"])
+
+
+class PaymentGatewayVerificationView(LoginPatientRequiredMixin, View):
+    @staticmethod
+    def get(request: WSGIRequest, *args, **kwargs):
+        order = Order(request)
+        authority = request.GET.get("Authority")
+        status = request.GET.get("Status")
+        if status == "OK":
+            response = verify(order.get_price(), authority)
+            if response["status"]:
+                order.set_status(True)
+                return redirect("appointments:booking-appointment")
+
+        order.set_status(False)
+        return redirect("appointments:booking-appointment")
+
+
+class BookingAppointmentView(LoginPatientRequiredMixin, View):
+    def get(self, request):
+        order = Order(request)
+        doctor = get_object_or_404(Doctor, pk=order.get_doctor_pk())
+        start_datetime = timezone.datetime.fromisoformat(order.get_start_date())
         patient = self.request.user.patient
-        Appointment.objects.create(
-            doctor=doctor,
-            patient=patient,
-            start_date=start_datetime,
-        )
-        messages.success(request, "Booking submitted successfully.")
-        return redirect("appointments:show_weekly_doctor_availability", doctor_pk=doctor_pk)
+        if order.get_status():
+            appointment = Appointment.objects.create(
+                doctor=doctor,
+                patient=patient,
+                start_date=start_datetime,
+            )
+            # send the appointment to patient
+            # send_mail(
+            #     "Appointment Order Submitted",
+            #     f"""
+            #                     Hi Dear {request.user.get_full_name()},
+            #                     Your appointment order has been submitted successfully.
+            #                     Appointment Detail:
+            #                     Doctor: Dr. {doctor.first_name} {doctor.last_name}
+            #                     Appointment time start: {start_datetime}
+            #                     office address: {doctor.address}
+            #
+            #                     GoodLuck for your from our team
+            #                     """,
+            #     None,
+            #     [request.user.email],
+            # )
+            order.clear()
+            messages.success(request, "Booking submitted successfully.")
+            return render(request, "appointments/booking_status.html", {"appointment": appointment})
+        else:
+            order.clear()
+            messages.warning(request, "Failed to book appointment. Please try again.")
+            return redirect("appointments:show_weekly_doctor_availability", doctor_pk=doctor.pk)

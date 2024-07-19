@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Check out the order
+{% endblock %}
+
+{% block content %}
+	<h1>Your Appointment Order</h1>
+
+	<table class="table table-bordered">
+		<tr>
+			<th>Doctor</th>
+			<th>Start date</th>
+			<th>Fee</th>
+		</tr>
+		<tr>
+			<td>{{ doctor }}</td>
+			<td>{{ start_date }}</td>
+			<td>{{ doctor.fee }}</td>
+		</tr>
+
+	</table>
+	<h2>Select payment method</h2>
+	<p>Your wallet balance: {{ request.user.patient.wallet }}</p>
+	<form action="" method="post">
+		{% csrf_token %}
+		<div class="form-group">
+			<label for="payment_method">Payment Method:</label>
+			<select class="form-control" id="payment_method" name="payment_method">
+				<option value="wallet">Wallet</option>
+				<option value="gateway">Gateway</option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+
+{% endblock %}

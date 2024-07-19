@@ -1,6 +1,12 @@
 from django.urls import path
 
-from .views import ShowWeeklyDoctorAvailabilityView, BookingAppointmentView
+from .views import (
+    ShowWeeklyDoctorAvailabilityView,
+    BookingAppointmentView,
+    CheckoutAppointmentOrderView,
+    PaymentAppointmentOrderView,
+    PaymentGatewayVerificationView,
+)
 
 app_name = "appointments"
 urlpatterns = [
@@ -9,8 +15,19 @@ urlpatterns = [
         ShowWeeklyDoctorAvailabilityView.as_view(),
         name="show_weekly_doctor_availability",
     ),
+    path("payment/verify/", PaymentGatewayVerificationView.as_view(), name="payment-verify"),
     path(
-        "bookings/<int:doctor_pk>/<str:start_time>/",
+        "payment/<str:payment_method>/",
+        PaymentAppointmentOrderView.as_view(),
+        name="payment-order",
+    ),
+    path(
+        "checkout/<int:doctor_pk>/<str:start_date>/",
+        CheckoutAppointmentOrderView.as_view(),
+        name="checkout-appointment-order",
+    ),
+    path(
+        "bookings/",
         BookingAppointmentView.as_view(),
         name="booking-appointment",
     ),
