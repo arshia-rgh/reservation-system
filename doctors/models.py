@@ -108,8 +108,8 @@ class Schedule(BaseModelMixin):
         SUNDAY = 7
 
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name="schedules")
-    day_of_week = models.IntegerField(choices=DayOfWeek.choices)
-    start_time = models.TimeField(min)
+    day_of_week = models.IntegerField(choices=DayOfWeek.choices, unique=True)
+    start_time = models.TimeField()
     end_time = models.TimeField()
 
     class Meta:
