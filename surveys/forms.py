@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Rate, Comment
+from .models import Comment, Rate
 
 
 class RateCreationForm(forms.ModelForm):

@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView
 
 from doctors.models import Doctor
-from .forms import RateCreationForm, CommentCreationForm
+from .forms import CommentCreationForm, RateCreationForm
 
 
 class RateCommentCreateView(FormView):

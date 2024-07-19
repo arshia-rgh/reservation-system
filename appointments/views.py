@@ -7,13 +7,13 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views import View
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import DetailView, TemplateView
 
 from accounts.mixins import LoginPatientRequiredMixin
 from appointments.models import Appointment
 from appointments.order import Order
-from doctors.models import Schedule, Doctor
-from utils.zarinpal import verify, send_request
+from doctors.models import Doctor, Schedule
+from utils.zarinpal import send_request, verify
 
 
 class PaymentMethod(enum.Enum):
