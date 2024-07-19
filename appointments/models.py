@@ -22,6 +22,5 @@ class Appointment(BaseModelMixin):
     start_date = models.DateTimeField(null=False, blank=False)
     attended = models.BooleanField(default=False)
 
-
     def get_absolute_url(self):
         return reverse("appointments:detail", args=[self.pk])

@@ -43,14 +43,13 @@ class RegisterForm(UserCreationForm):
             "birth_date",
             "address",
         )
-        
-        
+
     def save(self, commit=True):
         user = super().save(commit=False)
         if commit:
             user.save()
-            user.user_permissions.add(Permission.objects.get(codename='view_patient')) 
-            user.user_permissions.add(Permission.objects.get(codename='change_patient'))  
+            user.user_permissions.add(Permission.objects.get(codename="view_patient"))
+            user.user_permissions.add(Permission.objects.get(codename="change_patient"))
             patient = Patient(
                 user=user,
                 phone_number=self.cleaned_data["phone_number"],
@@ -63,11 +62,7 @@ class RegisterForm(UserCreationForm):
 
 
 class UpdatePatientForm(forms.ModelForm):
-    phone_number = forms.CharField(
-        max_length=13,
-        required=False,
-        widget=forms.widgets.TextInput
-        )
+    phone_number = forms.CharField(max_length=13, required=False, widget=forms.widgets.TextInput)
     address = forms.CharField(
         max_length=255,
         required=False,
@@ -75,9 +70,9 @@ class UpdatePatientForm(forms.ModelForm):
     )
     birth_date = forms.DateField(
         required=False,
-        widget=forms.widgets.SelectDateWidget( years = [n for n in range(1960,2024)]),
-        )
-    
+        widget=forms.widgets.SelectDateWidget(years=[n for n in range(1960, 2024)]),
+    )
+
     class Meta:
         model = Patient
         fields = [
@@ -86,33 +81,35 @@ class UpdatePatientForm(forms.ModelForm):
             "birth_date",
         ]
 
+
 class TransactionForm(forms.ModelForm):
     """
     A form for patient to have a transaction
     """
+
     CHOICES_TRANSACTION = [
-        ("W","WITHRAW"),
-        ("D","DIPOSIT"),
+        ("W", "WITHRAW"),
+        ("D", "DIPOSIT"),
     ]
 
     transaction_type = forms.ChoiceField(
         choices=CHOICES_TRANSACTION,
         required=True,
-        )
-    
+    )
+
     amount = forms.IntegerField(
         required=True,
-        help_text= "how much (IRR) ?",
+        help_text="how much (IRR) ?",
         min_value=0,
-        )
-    
+    )
+
     class Meta:
         model = Patient
-        fields=["wallet"]
+        fields = ["wallet"]
         exclude = ["wallet"]
-        
+
     def save(self, commit=True):
-        #self.full_clean()
+        # self.full_clean()
         match (self.cleaned_data["transaction_type"]):
             case "W":
                 if self.cleaned_data["amount"] <= self.instance.wallet:
@@ -122,10 +119,9 @@ class TransactionForm(forms.ModelForm):
                     return "Withraw Is Done!"
                 else:
                     return "Unable to do Transaction, Please try again."
-                
+
             case "D":
-                    self.instance.wallet += self.cleaned_data["amount"]
-                    if commit:
-                        self.instance.save()
-                    return "Deposit Successfull !"
-                    
+                self.instance.wallet += self.cleaned_data["amount"]
+                if commit:
+                    self.instance.save()
+                return "Deposit Successfull !"

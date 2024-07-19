@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from doctors.models import Speciality, Doctor, Schedule
+from doctors.models import Doctor, Schedule, Speciality
 
 
 @admin.register(Speciality)
