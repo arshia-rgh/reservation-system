@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{%load static %}
+{%block extra_css %}
+<link rel="stylesheet" href="{% static "css/dashboard.css" %}">
+{%endblock%}
+{%block title %} Welcome {{user.username}} {% endblock %}
+
+{% block content %}
+<div class= "card flex-row">
+<div class="card-group-body p-2 ">
+  <a href="{% url "doctors:create" %}" class="btn btn-outline-primary">Create Doctor</a>
+</div>
+<div class="card-group-body p-2 ">
+  <a href="{% url "home:index" %}" class="btn btn-outline-secondary">View Doctors in Homepage</a>
+</div>
+</div>
+{% endblock %}

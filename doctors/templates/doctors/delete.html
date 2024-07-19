@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}
+	{{ object }}
+{% endblock title %}
+{% block content %}
+<div class="d-flex justify-content-center">
+<form method="post" class="card bg-light p-2 mx-auto text-center">{% csrf_token %}
+    <p>Are you sure you want to delete <br> "{{ object }}"?</p>
+    {{ form.as_p }}
+    <input type="submit" class="btn btn-danger" value="Confirm">
+</form>
+</div>
+{%endblock content%}

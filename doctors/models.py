@@ -92,7 +92,7 @@ class Schedule(BaseModelMixin):
     Model representing a doctor's schedule in the medical system.
 
     Attributes:
-    doctor: The doctor associated with the schedule.
+    doctor: The Doctor object associated with the schedule.
     day_of_week: The day of the week for the schedule.
     start_time: The start time of the schedule.
     end_time: The end time of the schedule.
@@ -109,7 +109,7 @@ class Schedule(BaseModelMixin):
 
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name="schedules")
     day_of_week = models.IntegerField(choices=DayOfWeek.choices)
-    start_time = models.TimeField()
+    start_time = models.TimeField(min)
     end_time = models.TimeField()
 
     class Meta:

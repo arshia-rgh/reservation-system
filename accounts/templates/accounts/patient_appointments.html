@@ -1,28 +1,47 @@
 {% block appointments %}
-<div class="box" value="Due-Appointments" style=" overflow-y: scroll;">
-    <p>Your Due appointments :</p>
-    {% for appointment in not_attended%}
-        <div class = "appointment">
-            <p> {{appointment.doctor}} </p>
-            {% if appointment.start_date < now %}
-                <p>{{appointment.start_date}} </p>
-            {% else %}
-                <p class="alert"> You've missed it!<p>
-                <p>{{appointment.start_date}}</p>
-            {%endif %}
-            <a href="{{ appointment.get_absolute_url }}" class="btn btn-primary">Detail</a>
+<div class="container text-center "style=" max-height:100%;max-width:100%;">
+    <div class="row bg-light " >
+        <div class="col p-2" >
+            <a class="p-2 btn btn-outline-primary" href="{% url "home:index" %} " >Make an appointment?</a>
         </div>
-    {% endfor %}
+    </div>
+    <div class="row bg-light" >
+        <div class="col text-center">
+            <p class="text-primary">Your Due Appointments :</p>
+            <div class="d-flex flex-row overflow-y-scroll"style="flex-wrap:wrap;">
+            {% for appointment in not_attended%}
+                <div class="card bg-light text-center mx-auto m-2" style="max-width: 18rem;">
+                    <p class="card-header"> {{appointment.doctor}} </p>
+                    <a  class="btn card-body" href="{{ appointment.get_absolute_url }}">
+                        {% now "Y-m-d" as now %} 
+                        {% if appointment.start_date < now %}
+                        <p class="text-info">{{appointment.start_date}} </p>
+                        {% else %}
+                        <p class="text-danger">You've missed it!<br>{{appointment.start_date}}</p>
+                        {%endif %}
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-sm-6 offset-md-auto p-2  text-center" >
+            <p class="text-primary">Your History of appointments:</p>
+            <div class="d-flex flex-row overflow-y-scroll"style="flex-wrap:wrap;">
+            {% for appointment in attended %}  
+            <div class = "card bg-light  mx-auto m-2" style="max-width: 18rem;" >
+                <p class="card-header"> {{appointment.doctor}} </p>
+                <a href="{{ appointment.get_absolute_url }}" class="btn card-body">
+                    <p class="text-info">On: {{appointment.start_date}} </p>
+                </a>
+            </div> 
+            {% endfor %}
+        </div>
+    </div>
 </div>
-<div class="box" value="Appointments" style=" overflow-y: scroll;">
-    <title>Your History of appointments:</title>
-    {% for appointment in attended %}  
-    <div class = "appointment" >
-        <p> {{appointment.doctor}} </p>
-        <p>{{appointment.start_date}} </p>
-        <a href="{{ appointment.get_absolute_url }}" class="btn btn-primary">Detail</a>
-    </div> 
-    {% endfor %}
+                
+        
+    
+    
+        
 </div>
-<a href="{% url "home:index" %} " >Make an appointment?</a>
 {% endblock appointments %}
