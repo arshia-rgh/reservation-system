@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 
 from accounts.mixins import LoginPatientRequiredMixin
 from appointments.models import Appointment
@@ -109,8 +109,15 @@ class PaymentAppointmentOrderView(LoginPatientRequiredMixin, View):
         price = order.get_price()
         if payment_method == PaymentMethod.WALLET.value:
             patient = request.user.patient
-            patient.wallet -= price
-            return redirect("appointments:booking-appointment")
+            if patient.wallet >= price:
+                patient.wallet -= price
+                patient.save()
+                order.set_status(True)
+                return redirect("appointments:booking-appointment")
+            else:
+                order.set_status(False)
+                messages.warning(request, "Insufficient wallet balance.")
+                return redirect("appointments:booking-appointment")
         else:
             response = send_request(
                 request, price, f"Appointment Order", request.user.patient.phone_number, request.user.email
@@ -169,7 +176,6 @@ class BookingAppointmentView(LoginPatientRequiredMixin, View):
             order.clear()
             messages.warning(request, "Failed to book appointment. Please try again.")
             return redirect("appointments:show_weekly_doctor_availability", doctor_pk=doctor.pk)
-
 
 
 class AppointmentDetailView(DetailView):
