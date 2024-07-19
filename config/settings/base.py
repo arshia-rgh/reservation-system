@@ -118,47 +118,41 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Logging Configuration
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-
-    'formatters': {
-        'simple': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
         },
-
-        'verbose': {
+        "verbose": {
             "format": "{name} {levelname} {asctime} {module} {process:d} {message}",
             "style": "{",
         },
     },
-
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
         },
-
-        'file': {
-            'level': 'WARNING',
-            'class': 'logging.FileHandler',
-            'filename': 'app.log',
-            'formatter': 'verbose',
+        "file": {
+            "level": "WARNING",
+            "class": "logging.FileHandler",
+            "filename": "app.log",
+            "formatter": "verbose",
         },
     },
-    
-    'loggers': {
-        '': {
-            'level': 'DEBUG',
-            'handlers': ['file', 'console'],
+    "loggers": {
+        "": {
+            "level": "DEBUG",
+            "handlers": ["file", "console"],
         }
     },
-
-    'root': { 
-        'level': 'DEBUG',
-        'handlers': ['file', 'console'],
-    }
+    "root": {
+        "level": "DEBUG",
+        "handlers": ["file", "console"],
+    },
 }
 
 LOGIN_REDIRECT_URL = "/"
@@ -170,3 +164,6 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+# Zarinpal gateway settings
+ZARINPAL = {"" "SANDBOX": True, "MERCHANT": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"}

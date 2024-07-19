@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Booking Status
+{% endblock %}
+
+{% block content %}
+	<div>
+		<h1>Booking Detail</h1>
+		<p>Your appointment has been booked for {{ appointment.doctor }} on {{ appointment.start_date }}</p>
+		<p>Your appointment fee is {{ appointment.doctor.fee }}</p>
+		<a href="{% url 'home:index' %}">Go back to home page</a>
+	</div>
+{% endblock %}
