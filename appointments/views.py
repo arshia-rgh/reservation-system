@@ -17,14 +17,14 @@ class ShowWeeklyDoctorAvailabilityView(LoginPatientRequiredMixin, TemplateView):
     def get_current_week():
         current_date = timezone.now()
 
-        start_date = current_date - timezone.timedelta(days=(current_date.weekday() or 7) - 1)
+        start_date = current_date 
         end_date = start_date + timezone.timedelta(days=7)
         return start_date, end_date
 
     @staticmethod
     def get_available_slots(doctor, start_date, end_date):
         def get_daily_slots(date):
-            day_of_week = date.weekday()
+            day_of_week = date.weekday() + 1
             availabilities = Schedule.objects.filter(doctor=doctor, day_of_week=day_of_week)
 
             available_slots = []
@@ -47,11 +47,14 @@ class ShowWeeklyDoctorAvailabilityView(LoginPatientRequiredMixin, TemplateView):
 
             return available_slots
 
+        if start_date >= end_date:
+            return []
+
         # Generate all dates within the range
         delta = end_date - start_date
         all_available_slots = {}
 
-        for i in range(1, delta.days + 1):
+        for i in range(delta.days):
             current_date = start_date + timezone.timedelta(days=i)
             daily_slots = get_daily_slots(current_date)
             all_available_slots[current_date.strftime("%A %d")] = daily_slots
