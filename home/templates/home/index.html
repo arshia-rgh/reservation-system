@@ -7,9 +7,12 @@
                 {% if speciality_filter %}
                     with {{ speciality_filter }} speciality
                 {% endif %}
+                {% if request.GET.name %}
+                    based on '{{ request.GET.name }}'
+                {% endif %}
             </h1>
             {% for doctor in doctors %}
-                <div class="card-group p-2">
+                <div class=" d-flex flex-row p-2" style="flex-wrap:wrap;">
                     <div class="col">
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
