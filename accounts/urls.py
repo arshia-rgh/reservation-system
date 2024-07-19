@@ -19,6 +19,7 @@ urlpatterns = [
     path("login/login-by-otp/", login_by_otp, name="login_by_otp"),
     path("logout/", logout_view, name="logout"),
     path("dashboard/", DashboardView.as_view(), name="dashboard"),
+    path("admin-dashboard/", AdminDashboardView.as_view(), name="admin_dashboard"),
     path("profile/", ProfileView.as_view(), name="profile"),
     path("wallet/", WalletView.as_view(), name="wallet"),
 ]

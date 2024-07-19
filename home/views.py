@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.views.generic import ListView
 
 from doctors.models import Doctor, Speciality
@@ -20,6 +21,14 @@ class IndexHomePageView(ListView):
 
         :return: The filtered queryset of doctors.
         """
+        name_filter = self.request.GET.get(
+            "name"
+            ) # Get the name filter from the request query parameters.
+        if name_filter :
+            # If a name filter is provided, filter the queryset based on the name.
+            return self.queryset.filter(
+                Q(first_name__icontains=name_filter)|Q(last_name__icontains=name_filter)
+            )
         speciality_filter = self.request.GET.get(
             "speciality"
         )  # Get the speciality filter from the request query parameters.

@@ -1,4 +1,5 @@
 import secrets
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib import messages
@@ -11,7 +12,6 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.utils import timezone as tz
 from django.views.generic import CreateView, View
 from dotenv import load_dotenv
 
@@ -126,7 +126,7 @@ class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, View):
     """
 
     login_url = "login/"
-    permission_required = "accounts.view_patient"
+    permission_required=["accounts.view_patient"]
     template_name = "accounts/dashboard.html"
 
     def get_context_data(self, **kwargs):
@@ -148,7 +148,20 @@ class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, View):
             },
         }
 
-        return render(request, "accounts/dashboard.html", context)
+        return render(request,
+                        "accounts/dashboard.html",
+                        context=context)
+
+
+class AdminDashboardView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    template_name = "accounts/admin_dashboard.html"
+    login_url = "login/"
+    permission_required=["is_staff"]
+    
+    def get(self,request):
+        return render(request ,
+                      "accounts/admin_dashboard.html"
+                    )
 
 
 class ProfileView(LoginRequiredMixin, PermissionRequiredMixin, View):
