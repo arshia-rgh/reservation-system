@@ -25,6 +25,6 @@ def appointments(context):
     attended = appos["attended"]
     not_attended = appos["not_attended"]
     return {
-            "attended": attended,
-            "not_attended": not_attended
-            }
+        "attended": attended,
+        "not_attended": not_attended,
+    }

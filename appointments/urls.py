@@ -1,18 +1,17 @@
 from django.urls import path
 
-
 from .views import (
     AppointmentDetailView,
-    ShowWeeklyDoctorAvailabilityView,
     BookingAppointmentView,
     CheckoutAppointmentOrderView,
     PaymentAppointmentOrderView,
     PaymentGatewayVerificationView,
+    ShowWeeklyDoctorAvailabilityView,
 )
 
 app_name = "appointments"
 urlpatterns = [
-    path("details/<int:pk>/", AppointmentDetailView.as_view(), name= "detail"),
+    path("details/<int:pk>/", AppointmentDetailView.as_view(), name="detail"),
     path(
         "weekly/show/<int:doctor_pk>/",
         ShowWeeklyDoctorAvailabilityView.as_view(),

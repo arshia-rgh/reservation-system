@@ -77,6 +77,7 @@ class LogoutViewTestCase(TestCase):
         self.assertRedirects(response, expected_url="/", status_code=302, target_status_code=200)
         self.assertNotIn("_auth_user_id", self.client.session)
 
+
 class WalletViewTestCase(TestCase):
     def setUp(self):
         self.user_data = {
@@ -88,46 +89,45 @@ class WalletViewTestCase(TestCase):
             "last_name": "User2",
             "phone_number": "09301234566",
             "birth_date": "2003-01-01",
-            "address": "Addres2 city 2"
+            "address": "Addres2 city 2",
         }
         self.client.post(reverse("accounts:register"), self.user_data)
         self.user = User.objects.get(username="testuser2")
         self.client.login(username="testuser2", password="djangoP@ssw0rd")
-        self.patient = Patient.objects.get(user = self.user)
-    
+        self.patient = Patient.objects.get(user=self.user)
+
     def test_wallet_view_get(self):
-        
+
         response = self.client.get(reverse("accounts:wallet"))
-        
+
         self.assertEqual(response.status_code, 200)
         self.assertTrue("wallet_balance" in response.context)
         self.assertTrue("transaction_form" in response.context)
         self.assertEqual(response.context["wallet_balance"], 0)
         self.assertIsInstance(response.context["transaction_form"], TransactionForm)
-        #print(response.context["transaction_form"])
+        # print(response.context["transaction_form"])
 
     def test_wallet_view_post(self):
+        response = self.client.post(reverse("accounts:wallet"), {"transaction_type": "D", "amount": 1000})
 
-        response = self.client.post(reverse("accounts:wallet"), {"transaction_type":"D", "amount":1000})
-        
-        self.assertEqual(Patient.objects.get(user=self.user).wallet , 1000)
+        self.assertEqual(Patient.objects.get(user=self.user).wallet, 1000)
         self.assertRedirects(response, expected_url="/accounts/wallet/", status_code=302, target_status_code=200)
 
-        response = self.client.post(reverse("accounts:wallet"), data={"transaction_type":"W", "amount":10000})
-        self.assertEqual(Patient.objects.get(user=self.user).wallet , 1000)
+        response = self.client.post(reverse("accounts:wallet"), data={"transaction_type": "W", "amount": 10000})
+        self.assertEqual(Patient.objects.get(user=self.user).wallet, 1000)
         self.assertRedirects(response, expected_url="/accounts/wallet/", status_code=302)
 
-        response = self.client.post(reverse("accounts:wallet"), data={"transaction_type":"W", "amount":1000})
+        response = self.client.post(reverse("accounts:wallet"), data={"transaction_type": "W", "amount": 1000})
         self.assertRedirects(response, expected_url="/accounts/wallet/", status_code=302, target_status_code=200)
-        self.assertEqual(Patient.objects.get(user=self.user).wallet , 0)
+        self.assertEqual(Patient.objects.get(user=self.user).wallet, 0)
 
 
 class TestTransactionForm(TestCase):
-    
+
     def test_empty_form(self):
         form = TransactionForm()
-        self.assertIn("amount",form.fields)
-        self.assertIn("transaction_type",form.fields)
+        self.assertIn("amount", form.fields)
+        self.assertIn("transaction_type", form.fields)
 
 
 class TestDashboardView(TestCase):
@@ -142,24 +142,25 @@ class TestDashboardView(TestCase):
             "last_name": "User3",
             "phone_number": "09301234565",
             "birth_date": "1990-11-01",
-            "address": "Addres3 city 3"
+            "address": "Addres3 city 3",
         }
         self.client.post(reverse("accounts:register"), self.user_data)
         self.user = User.objects.get(username="testuser3")
         self.client.login(username="testuser3", password="djangoP@ssw0rd")
-        self.patient = Patient.objects.get(user = self.user)
+        self.patient = Patient.objects.get(user=self.user)
 
     def test_dashboard_view_get(self):
         response = self.client.get(reverse("accounts:dashboard"))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["now"].year, tz.now().year )
-        self.assertEqual(response.context["patient"], self.patient )
+        self.assertEqual(response.context["now"].year, tz.now().year)
+        self.assertEqual(response.context["patient"], self.patient)
         app_dict = response.context["appointments"]
-        self.assertIn( "not_attended",app_dict )
-        self.assertIn( "attended", app_dict )
+        self.assertIn("not_attended", app_dict)
+        self.assertIn("attended", app_dict)
         self.assertIn("now", response.context)
         self.assertIn(b'<a href="/accounts/profile/">', response.content)
         self.assertIn(b'<a href="/accounts/wallet/">', response.content)
+
 
 class TestProfileView(TestCase):
     def setUp(self):
@@ -172,41 +173,38 @@ class TestProfileView(TestCase):
             "last_name": "User4",
             "phone_number": "09301234564",
             "birth_date": "1994-11-04",
-            "address": "Addres4 city 4"
+            "address": "Addres4 city 4",
         }
         self.client.post(reverse("accounts:register"), self.user_data)
         self.user = User.objects.get(username="testuser4")
         self.client.login(username="testuser4", password="djangoP@ssw0rd")
-        self.patient = Patient.objects.get(user = self.user)
+        self.patient = Patient.objects.get(user=self.user)
 
     def test_profile_view_get(self):
         response = self.client.get(reverse("accounts:profile"))
         self.assertEqual(response.status_code, 200)
-        p_data= response.context["patient_data"]
+        p_data = response.context["patient_data"]
         self.assertIn("phone_number", p_data)
         self.assertIn("address", p_data)
         self.assertIn("birth_date", p_data)
         self.assertIsInstance(response.context["patient_form"], UpdatePatientForm)
-    
+
     def test_profile_view_post(self):
-        data = {"phone_number": "09391311532",
-                "address":"round 3 Avenue 4",
-                "birth_date": datetime.date(1995, 12 , 6)
-                }
+        data = {"phone_number": "09391311532", "address": "round 3 Avenue 4", "birth_date": datetime.date(1995, 12, 6)}
         response = self.client.post(reverse("accounts:profile"), data=data)
         self.assertEqual(response.status_code, 200)
         p = Patient.objects.get(user=self.user)
         self.assertEqual(p.phone_number, "09391311532")
         self.assertEqual(p.address, "round 3 Avenue 4")
-        self.assertEqual(p.birth_date, datetime.date(1995, 12 , 6))
+        self.assertEqual(p.birth_date, datetime.date(1995, 12, 6))
 
         data["phone_number"] = "0939131153"
         response = self.client.post(reverse("accounts:profile"), data=data)
         self.assertEqual(response.status_code, 302)
         p = Patient.objects.get(user=self.user)
         self.assertEqual(p.phone_number, "09391311532")
-        
-        data["birth_date"] = datetime.date(2025, 12 , 6)
+
+        data["birth_date"] = datetime.date(2025, 12, 6)
         response = self.client.post(reverse("accounts:profile"), data=data)
         self.assertEqual(response.status_code, 302)
         p = Patient.objects.get(user=self.user)

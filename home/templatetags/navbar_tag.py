@@ -23,5 +23,7 @@ def navbar(context):
     {% load navbar %}
     ```
     """
-    return {"specialities": Speciality.objects.all(),
-            "user": context["user"]}
+    return {
+        "specialities": Speciality.objects.all(),
+        "user": context["user"],
+    }
