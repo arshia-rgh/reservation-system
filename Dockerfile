@@ -44,9 +44,6 @@ COPY entrypoint.sh /app/entrypoint.sh
 # RUN: Executes any commands in a new layer on top of the current image and commits the results
 RUN chmod +x /app/entrypoint.sh
 
-# Collect static files using Django's manage.py
-RUN python manage.py collectstatic --noinput
-
 # Set the entrypoint for the container
 # ENTRYPOINT: Allows you to configure a container that will run as an executable
 ENTRYPOINT ["/app/entrypoint.sh"]
