@@ -4,3 +4,4 @@ psycopg[binary]==3.2.1
 gunicorn==22.0.0
 model-bakery==1.18.2
 requests==2.32.3
+kavenegar==1.1.2
