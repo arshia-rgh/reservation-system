@@ -1,5 +1,3 @@
-import random
-
 from django.core.validators import RegexValidator
 from django.db import models
 
@@ -45,8 +43,3 @@ class OtpToken(BaseModelMixin):
 
     def __str__(self):
         return self.user.get_full_name()
-
-    @staticmethod
-    def generate_otp():
-        code = str(random.randint(100000, 999999))
-        return code
