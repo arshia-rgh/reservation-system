@@ -6,6 +6,7 @@ DEBUG = False
 # ALLOWED_HOSTS is a list of strings representing the host/domain names that this Django site can serve.
 # It's fetched from the environment variable ALLOWED_HOSTS and split by space.
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(",")
 
 # DATABASES is a dictionary containing the settings for all databases to be used in the project.
 # Here, we have a single database named 'default' using PostgreSQL.
