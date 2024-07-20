@@ -1,4 +1,4 @@
-import secrets
+import random
 
 from django.core.validators import RegexValidator
 from django.db import models
@@ -40,8 +40,13 @@ class Patient(BaseModelMixin):
 
 class OtpToken(BaseModelMixin):
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="otps")
-    otp_code = models.CharField(max_length=6, default=secrets.token_hex(3))
+    otp_code = models.CharField(max_length=6)
     otp_expires_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.user.get_full_name()
+
+    @staticmethod
+    def generate_otp():
+        code = str(random.randint(100000, 999999))
+        return code
