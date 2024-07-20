@@ -2,12 +2,13 @@ services:
   web:
     build: .
     container_name: web
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     env_file:
       - .env
     volumes:
       - static_volume:/app/staticfiles
+      - media_volume:/app/mediafiles
     depends_on:
       - db
     networks:
@@ -28,10 +29,23 @@ services:
     networks:
       - app_network
     restart: always
+  nginx:
+    build: ./nginx
+    ports:
+      - "8000:80"
+    depends_on:
+      - web
+    restart: "always"
+    networks:
+      - app_network
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/mediafiles
 
 volumes:
   postgres_data:
   static_volume:
+  media_volume:
 
 
 networks:

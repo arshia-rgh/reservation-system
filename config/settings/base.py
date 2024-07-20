@@ -166,4 +166,7 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
 # Zarinpal gateway settings
-ZARINPAL = {"" "SANDBOX": True, "MERCHANT": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"}
+ZARINPAL = {
+    "SANDBOX": True,
+    "MERCHANT": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+}
