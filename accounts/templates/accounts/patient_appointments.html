@@ -14,7 +14,7 @@
                     <p class="card-header"> {{appointment.doctor}} </p>
                     <a  class="btn card-body" href="{{ appointment.get_absolute_url }}">
                         {% now "Y-m-d" as now %} 
-                        {% if appointment.start_date < now %}
+                        {% if appointment.start_date|date:"Y-m-d H:M" > now %}
                         <p class="text-info">{{appointment.start_date}} </p>
                         {% else %}
                         <p class="text-danger">You've missed it!<br>{{appointment.start_date}}</p>
